@@ -1,0 +1,94 @@
+{
+  "id": "com.weatherflow.smartweatherstation",
+  "version": "1.0.0",
+  "compatibility": ">=2.0.0",
+  "sdk": 2,
+  "name": {
+    "en": "Smart Weather Station"
+  },
+  "description": {
+    "en": "Adds support for WeatherFlow's Smart Weather Station"
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Joel Fjordén",
+    "email": "joel@fjorden.se"
+  },
+  "drivers": [
+    {
+      "id": "air",
+      "name": {
+        "en": "Air"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_humidity",
+        "measure_pressure",
+        "measure_temperature"
+      ],
+      "images": {
+        "large": "/drivers/air/assets/images/large.png",
+        "small": "/drivers/air/assets/images/small.png"
+      },
+      "pair": [
+        {
+            "id": "list_devices",
+            "template": "list_devices",
+            "navigation": {
+                "next": "add_devices"
+            },
+            "options": {
+              "singular": false
+            }
+        },
+        {
+            "id": "add_devices",
+            "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "sky",
+      "name": {
+        "en": "Sky"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_gust_angle",
+        "measure_gust_strength",
+        "measure_luminance",
+        "measure_rain",
+        "meter_rain",
+        "measure_wind_angle",
+        "measure_wind_strength"
+      ],
+      "images": {
+        "large": "/drivers/sky/assets/images/large.png",
+        "small": "/drivers/sky/assets/images/small.png"
+      },
+      "pair": [
+        {
+            "id": "list_devices",
+            "template": "list_devices",
+            "navigation": {
+                "next": "add_devices"
+            },
+            "options": {
+              "singular": false
+            }
+        },
+        {
+            "id": "add_devices",
+            "template": "add_devices"
+        }
+      ]
+    }
+  ]
+}
