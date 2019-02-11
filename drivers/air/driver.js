@@ -32,7 +32,7 @@ class AirDriver extends Homey.Driver {
     // }
 
     async onPairListDevices(data, callback) {
-        await this._sleep(5000);
+        await this._sleep(10000);
 
         const airDevices = Homey.app.devices.filter(device => device.name.startsWith("AR"));
 
@@ -53,7 +53,7 @@ class AirDriver extends Homey.Driver {
     }
 
     updateObservations(message) {
-        console.log(`Air observation: ${JSON.stringify(message)}`);
+        // console.log(`Air observation: ${JSON.stringify(message)}`);
 
         const deviceSerialNumber = message.serial_number;
         const device = this.getDevice({ "serialNumber": deviceSerialNumber });
@@ -61,8 +61,6 @@ class AirDriver extends Homey.Driver {
             console.warn(`No device found with serialnumber '${deviceSerialNumber}'.`);
             return;
         }
-
-        console.log(`Device?: ${JSON.stringify(device)}`);
 
         const observations = message.obs;
         if (!observations || observations.length === 0)

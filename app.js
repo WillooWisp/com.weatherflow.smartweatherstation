@@ -10,7 +10,7 @@ const skyDriverName = "sky";
 class SmartWeatherStationApp extends Homey.App {
 	
 	onInit() {
-		this.log('MyApp is running...');
+		this.log('SmartWeatherStationApp is running...');
 
 		this.devices = [];
 
@@ -23,8 +23,6 @@ class SmartWeatherStationApp extends Homey.App {
 		});
 	
 		server.on('message', (msg, rinfo) => {
-			// console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-	
 			var udpMessage = JSON.parse(msg);
 			switch (udpMessage.type) {
 				case 'hub_status':
@@ -69,7 +67,7 @@ class SmartWeatherStationApp extends Homey.App {
     }
 
     _deviceStatus(message) {
-		console.log(`Device status: ${JSON.stringify(message)}`);
+		// console.log(`Device status: ${JSON.stringify(message)}`);
 
 		// Serial number: {udpResponseMessage.SerialNumber}
 		// Hub serial number: {udpResponseMessage.HubSerialNumber}
@@ -83,7 +81,7 @@ class SmartWeatherStationApp extends Homey.App {
 	}
 
 	_hubStatus(message) {
-		console.log(`Hub status: ${JSON.stringify(message)}`);
+		// console.log(`Hub status: ${JSON.stringify(message)}`);
 
 		// Serial number: {udpResponseMessage.SerialNumber}
 		// Uptime: {TimeSpan.FromSeconds(udpResponseMessage.Uptime).TotalHours} hours

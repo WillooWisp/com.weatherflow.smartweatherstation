@@ -9,7 +9,7 @@ class SkyDriver extends Homey.Driver {
     }
     
     async onPairListDevices(data, callback) {
-        await this._sleep(5000);
+        await this._sleep(10000);
 
         const airDevices = Homey.app.devices.filter(device => device.name.startsWith("SK"));
 
@@ -30,7 +30,7 @@ class SkyDriver extends Homey.Driver {
     }
 
     updateObservations(message) {
-        console.log(`Sky observation: ${JSON.stringify(message)}`);
+        // console.log(`Sky observation: ${JSON.stringify(message)}`);
 
         const deviceSerialNumber = message.serial_number;
         const device = this.getDevice({ "serialNumber": deviceSerialNumber });
@@ -38,8 +38,6 @@ class SkyDriver extends Homey.Driver {
             console.warn(`No device found with serialnumber '${deviceSerialNumber}'.`);
             return;
         }
-
-        console.log(`Device?: ${JSON.stringify(device)}`);
 
         const observations = message.obs;
 		if (!observations || observations.length === 0)
@@ -50,9 +48,9 @@ class SkyDriver extends Homey.Driver {
 			return;
 
 		device.setCapabilityValue('measure_luminance', values[1]).catch(error => this._onError(error));		
-		device.setCapabilityValue('measure_wind_strength', values[5]).catch(error => this._onError(error));		
+		device.setCapabilityValue('measure_wind_strength', values[5] * 3.6).catch(error => this._onError(error));		
 		device.setCapabilityValue('measure_wind_angle', values[7]).catch(error => this._onError(error));		
-		device.setCapabilityValue('measure_gust_strength', values[6]).catch(error => this._onError(error));
+		device.setCapabilityValue('measure_gust_strength', values[6] * 3.6).catch(error => this._onError(error));
 		device.setCapabilityValue('measure_gust_angle', values[7]).catch(error => this._onError(error));
 		device.setCapabilityValue('measure_rain', values[3]).catch(error => this._onError(error));	
 		device.setCapabilityValue('meter_rain', values[3]).catch(error => this._onError(error));
