@@ -9,7 +9,7 @@ class SkyDriver extends Homey.Driver {
     }
     
     async onPairListDevices(data, callback) {
-        await this._sleep(10000);
+        await this._sleep(20000);
 
         const airDevices = Homey.app.devices.filter(device => device.name.startsWith("SK"));
 
@@ -51,9 +51,9 @@ class SkyDriver extends Homey.Driver {
 		device.setCapabilityValue('measure_wind_strength', values[5] * 3.6).catch(error => this._onError(error));		
 		device.setCapabilityValue('measure_wind_angle', values[7]).catch(error => this._onError(error));		
 		device.setCapabilityValue('measure_gust_strength', values[6] * 3.6).catch(error => this._onError(error));
-		device.setCapabilityValue('measure_gust_angle', values[7]).catch(error => this._onError(error));
+		// device.setCapabilityValue('measure_gust_angle', values[7]).catch(error => this._onError(error));
 		device.setCapabilityValue('measure_rain', values[3]).catch(error => this._onError(error));	
-		device.setCapabilityValue('meter_rain', values[3]).catch(error => this._onError(error));
+		// device.setCapabilityValue('meter_rain', values[3]).catch(error => this._onError(error));
 
 		// UV: {values[2]} Index
 		// Rain accumulated: {values[3]} mm

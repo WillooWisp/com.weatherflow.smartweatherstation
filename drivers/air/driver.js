@@ -32,7 +32,7 @@ class AirDriver extends Homey.Driver {
     // }
 
     async onPairListDevices(data, callback) {
-        await this._sleep(10000);
+        await this._sleep(20000);
 
         const airDevices = Homey.app.devices.filter(device => device.name.startsWith("AR"));
 
