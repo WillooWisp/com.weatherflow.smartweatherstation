@@ -55,12 +55,9 @@ class AirDriver extends Homey.Driver {
     updateObservations(message) {
         // console.log(`Air observation: ${JSON.stringify(message)}`);
 
-        const deviceSerialNumber = message.serial_number;
-        const device = this.getDevice({ "serialNumber": deviceSerialNumber });
-        if (device instanceof Error) {
-            console.warn(`No device found with serialnumber '${deviceSerialNumber}'.`);
+        const device = this._getDevice(message.serial_number);
+        if (!device)
             return;
-        }
 
         const observations = message.obs;
         if (!observations || observations.length === 0)
@@ -70,22 +67,46 @@ class AirDriver extends Homey.Driver {
         if (!values || values.length === 0)
             return;
 
-        device.setCapabilityValue('measure_pressure', values[1]).catch(error => this._onError(error));
-        device.setCapabilityValue('measure_temperature', values[2]).catch(error => this._onError(error));
-        device.setCapabilityValue('measure_humidity', values[3]).catch(error => this._onError(error));
-
-        // "measure_gust_angle",
-        // "measure_gust_strength",
-        // "measure_luminance",
-        // "meter_rain",
-        // "measure_temperature",
-        // "measure_wind_angle",
-        // "measure_wind_strength"
-
-        // UpdateValue("air.lightningstrike.count", values[4]);
-        // UpdateValue("air.lightningstrike.averagedistance", values[5]);
-        // UpdateValue("air.battery", values[6]);
+        // Station Pressure: (MB)
+        device.setCapabilityValue('measure_pressure', values[1]).catch(this.error);
+        // Air Temperature: (C)
+        device.setCapabilityValue('measure_temperature', values[2]).catch(this.error);
+        // Relative Humidity: (%)
+        device.setCapabilityValue('measure_humidity', values[3]).catch(this.error);
+        // Lightning Strike Count
+        device.setCapabilityValue('measure_lightningstrike_count', values[4]).catch(this.error);
+        // Lightning Strike Avg Distance: (km)
+        device.setCapabilityValue('measure_lightningstrike_distance', values[5]).catch(this.error);
+        // Battery: (V)
+        device.setCapabilityValue('measure_voltage', values[6]).catch(this.error);
+        
         // UpdateValue("air.reportinterval", values[7]);
+    }
+
+    lightningStrikeEvent(message) {
+        console.log(`Air lightning strike: ${JSON.stringify(message)}`);
+
+        const device = this._getDevice(message.serial_number);
+        if (!device)
+            return;
+
+        const values = message.evt;
+        if (!values || values.length === 0)
+            return;
+
+        const timestamp = values[0];
+        const distance = values[1];
+        const energy = values[2];
+    }
+
+    _getDevice(deviceSerialNumber) {
+        const device = this.getDevice({ "serialNumber": deviceSerialNumber });
+        if (device instanceof Error) {
+            console.warn(`No device found with serialnumber '${deviceSerialNumber}'.`);
+            return undefined;
+        }
+
+        return device;
     }
 
     _sleep(ms) {

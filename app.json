@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
@@ -25,6 +25,91 @@
     "name": "Joel Fjordén",
     "email": "joel@fjorden.se"
   },
+  "contributing": {
+		"donate": {
+		  "paypal": {
+			"username": "willoowisp"
+		  }
+		}
+	},
+  "homeyCommunityTopicId": 9816,
+  "capabilities": {
+    "measure_rain_day": {
+      "type": "number",
+      "title": {
+        "en": "Rain 24h"
+      },
+      "getable": true,
+      "setable": false,
+      "decimals": 0,
+      "units": {
+        "en": "mm"
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false,
+      "icon": "/assets/measure_rain_day_capability.svg"
+    },
+    "measure_uv": {
+      "type": "number",
+      "title": {
+        "en": "UV"
+      },
+      "getable": true,
+      "setable": false,
+      "decimals": 0,
+      "units": {
+        "en": "index"
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false,
+      "icon": "/assets/measure_uv_capability.svg"
+    },
+    "measure_solarradiation": {
+      "type": "number",
+      "title": {
+        "en": "Solar Radiation"
+      },
+      "getable": true,
+      "setable": false,
+      "decimals": 2,
+      "units": {
+        "en": "W/m^2"
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false,
+      "icon": "/assets/measure_solarradiation_capability.svg"
+    },
+    "measure_lightningstrike_count": {
+      "type": "number",
+      "title": {
+        "en": "Lightning Strike Count"
+      },
+      "getable": true,
+      "setable": false,
+      "decimals": 0,
+      "units": {
+        "en": ""
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false,
+      "icon": "/assets/measure_lightningstrike_capability.svg"
+    },
+    "measure_lightningstrike_distance": {
+      "type": "number",
+      "title": {
+        "en": "Lightning Strike Distance"
+      },
+      "getable": true,
+      "setable": false,
+      "decimals": 2,
+      "units": {
+        "en": "km"
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false,
+      "icon": "/assets/measure_lightningstrike_capability.svg"
+    }
+  },
   "drivers": [
     {
       "id": "air",
@@ -33,9 +118,12 @@
       },
       "class": "sensor",
       "capabilities": [
+        "measure_temperature",
         "measure_humidity",
         "measure_pressure",
-        "measure_temperature"
+        "measure_lightningstrike_count",
+        "measure_lightningstrike_distance",
+        "measure_voltage"
       ],
       "images": {
         "large": "/drivers/air/assets/images/large.png",
@@ -66,10 +154,14 @@
       "class": "sensor",
       "capabilities": [
         "measure_rain",
-        "measure_luminance",
+        "measure_rain_day",
         "measure_wind_strength",
         "measure_wind_angle",        
-        "measure_gust_strength"
+        "measure_gust_strength",
+        "measure_luminance",
+        "measure_uv",
+        "measure_solarradiation",
+        "measure_voltage"
       ],
       "images": {
         "large": "/drivers/sky/assets/images/large.png",
@@ -92,5 +184,103 @@
         }
       ]
     }
-  ]
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "rain_start",
+        "title": {
+          "en": "It starts raining"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "sky",
+            "filter": "driver_id=sky"
+          }
+        ]
+      },
+      {
+        "id": "wind_above",
+        "title": {
+          "en": "It is more wind than..."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "sky",
+            "filter": "driver_id=sky"
+          },        
+          {
+            "type": "range",
+            "name": "wind_speed",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "label": "m/s",
+            "labelDecimals": 0
+          }
+        ]
+      },
+      {
+        "id": "wind_below",
+        "title": {
+          "en": "It is less wind than..."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "sky",
+            "filter": "driver_id=sky"
+          },        
+          {
+            "type": "range",
+            "name": "wind_speed",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "label": "m/s",
+            "labelDecimals": 0
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "is_raining",
+        "title": {
+          "en": "It !{{is|isn't}} raining"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "sky",
+            "filter": "driver_id=sky"
+          }
+        ]
+      },
+      {
+        "id": "is_windy",
+        "title": {
+          "en": "It !{{is|isn't}} blowing heavy"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "sky",
+            "filter": "driver_id=sky"
+          },        
+          {
+            "type": "range",
+            "name": "wind_speed",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "label": "m/s",
+            "labelDecimals": 0
+          }
+        ]
+      }
+    ]
+  }
 }

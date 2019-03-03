@@ -38,6 +38,15 @@ class SmartWeatherStationApp extends Homey.App {
 				case 'obs_sky':
 					this._skyDriver.updateObservations(udpMessage)
 					break;
+				case 'evt_strike':
+					this._airDriver.lightningStrikeEvent(udpMessage)
+					break;	
+				case 'evt_precip':
+					this._skyDriver.rainStartEvent(udpMessage)
+					break;
+				case 'rapid_wind':
+					this._skyDriver.rapidWindEvent(udpMessage)
+					break;					
 			}
 		});
 	
