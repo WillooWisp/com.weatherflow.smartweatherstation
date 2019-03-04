@@ -56,11 +56,10 @@ class SkyDriver extends Homey.Driver {
         // Wind gust (m/s)
         device.setCapabilityValue('measure_gust_strength', values[6] * 3.6).catch(this.error);
         // Rain accumulated (mm)
-        const rain = parseInt(values[3], 10);
+        const rain = values[3];
         device.setCapabilityValue('measure_rain', rain).catch(this.error);
         // Local Day Rain Accumulation (mm)
         let dayRain = values[11];
-        console.log(`Sky rain day: ${dayRain}`);
         if (!dayRain) {
             dayRain = 0;
         }
@@ -97,8 +96,8 @@ class SkyDriver extends Homey.Driver {
         let state = { 'serial_number': message.serialNumber }
 
         this._rainStartTrigger.trigger(device, tokens, state)
+            .then()
             .catch(this.error)
-            .then(this.log)
     }
 
     async rapidWindEvent(message) {
@@ -120,11 +119,11 @@ class SkyDriver extends Homey.Driver {
         let state = { 'serial_number': message.serialNumber, 'wind_speed': windSpeed, 'last_triggered_wind_speed': this._lastRapidWindSpeed }
 
         this._windAboveTrigger.trigger(device, tokens, state)
-            .then(this.log)
+            .then()
             .catch(this.error)
 
         this._windBelowTrigger.trigger(device, tokens, state)
-            .then(this.log)
+            .then()
             .catch(this.error)
 
         this._lastRapidWindSpeed = windSpeed;
@@ -167,7 +166,7 @@ class SkyDriver extends Homey.Driver {
             .register()
             .registerRunListener((args, state) => {
 
-                console.log(`Wind condition run: ${args}, ${state} for ${args.my_device}`);
+                // console.log(`Wind condition run: ${args}, ${state} for ${args.my_device}`);
                 return Promise.resolve(this._lastRapidWindSpeed > args.wind_speed);
             });
     }
