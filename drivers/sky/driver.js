@@ -13,7 +13,7 @@ class SkyDriver extends Homey.Driver {
     async onPairListDevices(data, callback) {
         await this._sleep(20000);
 
-        const airDevices = Homey.app.devices.filter(device => device.name.startsWith("SK"));
+        const skyDevices = Homey.app.devices.filter(device => device.name.startsWith("SK"));
 
         // Required properties:
         // "data": { "id": "abcd" },
@@ -28,7 +28,7 @@ class SkyDriver extends Homey.Driver {
         // "store": { "foo": "bar" },
         // "settings": { "my_setting": "my_value" },
 
-        callback(null, airDevices);
+        callback(null, skyDevices);
     }
 
     updateObservations(message) {
@@ -58,12 +58,6 @@ class SkyDriver extends Homey.Driver {
         // Rain accumulated (mm)
         const rain = values[3];
         device.setCapabilityValue('measure_rain', rain).catch(this.error);
-        // Local Day Rain Accumulation (mm)
-        let dayRain = values[11];
-        if (!dayRain) {
-            dayRain = 0;
-        }
-        device.setCapabilityValue('measure_rain_day', dayRain).catch(this.error);
         // Solar radiation: (W/m^2)
         device.setCapabilityValue('measure_solarradiation', values[10]).catch(this.error);
         // Battery: (V)
@@ -71,14 +65,15 @@ class SkyDriver extends Homey.Driver {
 
         // Wind lull: {values[4]} m/s
         // Report interval: {values[9]} minutes
+        // Local Day Rain Accumulation: {values[11]} mm - always null with UDP API
         // Precipitation type: {values[12]}
         // Wind sample interval: {values[13]} seconds
 
-        this._isRaining = rain > 0;
+        this._updateRainFlow(rain);
     }
 
     rainStartEvent(message) {
-        console.log(`Sky rain start: ${JSON.stringify(message)}`);
+        // console.log(`Sky rain start: ${JSON.stringify(message)}`);
 
         const device = this._getDevice(message.serial_number);
         if (!device)
@@ -90,10 +85,10 @@ class SkyDriver extends Homey.Driver {
 
         const timestamp = values[0];
 
-        this._isRaining = true;
-
         let tokens = {}
-        let state = { 'serial_number': message.serialNumber }
+        let state = {}
+
+        this._isRaining = true;
 
         this._rainStartTrigger.trigger(device, tokens, state)
             .then()
@@ -116,7 +111,7 @@ class SkyDriver extends Homey.Driver {
         const windDirection = values[2];
 
         let tokens = {}
-        let state = { 'serial_number': message.serialNumber, 'wind_speed': windSpeed, 'last_triggered_wind_speed': this._lastRapidWindSpeed }
+        let state = { 'wind_speed': windSpeed }
 
         this._windAboveTrigger.trigger(device, tokens, state)
             .then()
@@ -126,34 +121,21 @@ class SkyDriver extends Homey.Driver {
             .then()
             .catch(this.error)
 
-        this._lastRapidWindSpeed = windSpeed;
+        this._lastWindSpeed = windSpeed;
     }
 
     _initFlows() {
-        this._rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start').register();
+        this._rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start')
+            .register();
 
         this._windAboveTrigger = new Homey.FlowCardTriggerDevice('wind_above')
             .registerRunListener((args, state) => {
-                // console.log(`Evaluate wind trigger condition ${state.last_triggered_wind_speed} <= ${args.wind_speed} && ${state.wind_speed} > ${args.wind_speed}...`);
-
-                // args parameter, this is the user input
-                // state parameter, as passed in trigger()
-
-                // console.log(args.sky);
-                // console.log(args.sky.data);
-
-                // TODO: Only resolve true for correct serial number.
-
-                // If true, this flow should run
-                return Promise.resolve(state.last_triggered_wind_speed <= args.wind_speed && state.wind_speed > args.wind_speed);
+                return Promise.resolve(state.wind_speed > args.wind_speed);
             }).register();
 
         this._windBelowTrigger = new Homey.FlowCardTriggerDevice('wind_below')
             .registerRunListener((args, state) => {
-                // TODO: Only resolve true for correct serial number.
-
-                // If true, this flow should run
-                return Promise.resolve(state.last_triggered_wind_speed > args.wind_speed && state.wind_speed <= args.wind_speed);
+                return Promise.resolve(state.wind_speed <= args.wind_speed);
             }).register();
 
         this._rainCondition = new Homey.FlowCardCondition('is_raining')
@@ -165,10 +147,12 @@ class SkyDriver extends Homey.Driver {
         this._windCondition = new Homey.FlowCardCondition('is_windy')
             .register()
             .registerRunListener((args, state) => {
-
-                // console.log(`Wind condition run: ${args}, ${state} for ${args.my_device}`);
-                return Promise.resolve(this._lastRapidWindSpeed > args.wind_speed);
+                return Promise.resolve(this._lastWindSpeed > args.wind_speed);
             });
+    }
+
+    _updateRainFlow(rain) {
+        this._isRaining = rain > 0;
     }
 
     _getDevice(deviceSerialNumber) {
