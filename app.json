@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
@@ -8,10 +8,14 @@
     "en": "Smart Weather Station"
   },
   "description": {
-    "en": "Adds support for WeatherFlow's Smart Weather Station"
+    "en": "Adds support for WeatherFlow's Smart Weather Station",
+    "nl": "Voegt ondersteuning voor WeatherFlow's Smart Weather Station toe",
+    "de": "Unterstützung für WeatherFlow's Smart Weather Station"
   },
   "tags": {
-    "en": [ "weatherflow smart weather temperature rain wind sensor" ]
+    "en": [ "weatherflow", "smart", "weather", "temperature", "rain", "wind", "lightning", "sensor" ],
+    "nl": [ "weatherflow", "slim" , "weer", "temperatuur", "regen", "wind", "Bliksem", "sensor" ],
+    "de": [ "Weaterhflow", "Smart", "Wetter", "Temperatur", "Regen", "Wind", "Blitz", "Sensor" ]
   },
   "category": [
     "climate"
@@ -37,13 +41,17 @@
     "measure_rain_day": {
       "type": "number",
       "title": {
-        "en": "Rain 24h"
+        "en": "Rain 24h",
+        "nl": "Regen 24h",
+        "de": "Regen 24h"
       },
       "getable": true,
       "setable": false,
       "decimals": 0,
       "units": {
-        "en": "mm"
+        "en": "mm",
+        "nl": "mm",
+        "de": "mm"
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
@@ -52,13 +60,17 @@
     "measure_uv": {
       "type": "number",
       "title": {
-        "en": "UV"
+        "en": "UV",
+        "nl": "UV",
+        "de": "UV"
       },
       "getable": true,
       "setable": false,
       "decimals": 0,
       "units": {
-        "en": "index"
+        "en": "index",
+        "nl": "index",
+        "de": "Index"
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
@@ -67,13 +79,17 @@
     "measure_solarradiation": {
       "type": "number",
       "title": {
-        "en": "Solar Radiation"
+        "en": "Solar Radiation",
+        "nl": "Zonnestraling",
+        "de": "Sonnenstrahlung"
       },
       "getable": true,
       "setable": false,
       "decimals": 2,
       "units": {
-        "en": "W/m^2"
+        "en": "W/m^2",
+        "nl": "W/m^2",
+        "de": "W/m^2"
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
@@ -82,13 +98,17 @@
     "measure_lightningstrike_count": {
       "type": "number",
       "title": {
-        "en": "Lightning Strike Count"
+        "en": "Lightning Strike Count",
+        "nl": "Bikseminslag telling",
+        "de": "Blitzschlagzählung"
       },
       "getable": true,
       "setable": false,
       "decimals": 0,
       "units": {
-        "en": ""
+        "en": "",
+        "nl": "",
+        "de": ""
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
@@ -97,13 +117,17 @@
     "measure_lightningstrike_distance": {
       "type": "number",
       "title": {
-        "en": "Lightning Strike Distance"
+        "en": "Lightning Strike Distance",
+        "nl": "Afstand Bliksem inslag ",
+        "de": "Blitzschlag-Entfernung"
       },
       "getable": true,
       "setable": false,
       "decimals": 2,
       "units": {
-        "en": "km"
+        "en": "km",
+        "nl": "km",
+        "de": "km"
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
@@ -114,7 +138,9 @@
     {
       "id": "air",
       "name": {
-        "en": "Air"
+        "en": "Air",
+        "nl": "Air",
+        "de": "Air"
       },
       "class": "sensor",
       "capabilities": [
@@ -149,7 +175,9 @@
     {
       "id": "sky",
       "name": {
-        "en": "Sky"
+        "en": "Sky",
+        "nl": "Sky",
+        "de": "Sky"
       },
       "class": "sensor",
       "capabilities": [
@@ -190,7 +218,9 @@
       {
         "id": "rain_start",
         "title": {
-          "en": "It starts raining"
+          "en": "It starts raining",
+          "nl": "Het begint te regenen",
+          "de": "Es beginnt zu regnen"
         },
         "args": [
           {
@@ -203,7 +233,9 @@
       {
         "id": "wind_above",
         "title": {
-          "en": "It is more wind than..."
+          "en": "It is more wind than...",
+          "nl": "Het waait harder dan...",
+          "de": "Es bläst härter als ..."
         },
         "args": [
           {
@@ -225,7 +257,9 @@
       {
         "id": "wind_below",
         "title": {
-          "en": "It is less wind than..."
+          "en": "It is less wind than...",
+          "nl": "Het waait minder hard dan...",
+          "de": "Es weht weniger als..."
         },
         "args": [
           {
@@ -249,7 +283,9 @@
       {
         "id": "is_raining",
         "title": {
-          "en": "It !{{is|isn't}} raining"
+          "en": "It !{{is|isn't}} raining",
+          "nl": "Het regent !{{ |niet}}",
+          "de": "es regnet !{{ |nicht}}"
         },
         "args": [
           {
@@ -262,7 +298,9 @@
       {
         "id": "is_windy",
         "title": {
-          "en": "It !{{is|isn't}} blowing heavy"
+          "en": "It !{{is|isn't}} blowing heavy",
+          "nl": "Het waait !{{ |niet}} hard",
+          "de": "Es weht !{{ |nicht}} hart"
         },
         "args": [
           {
