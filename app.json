@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.2.2",
+  "version": "0.3.1",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
@@ -30,33 +30,14 @@
     "email": "joel@fjorden.se"
   },
   "contributing": {
-		"donate": {
-		  "paypal": {
-			"username": "willoowisp"
-		  }
-		}
-	},
+    "donate": {
+      "paypal": {
+        "username": "willoowisp"
+      }
+    }
+  },
   "homeyCommunityTopicId": 9816,
   "capabilities": {
-    "measure_rain_day": {
-      "type": "number",
-      "title": {
-        "en": "Rain 24h",
-        "nl": "Regen 24h",
-        "de": "Regen 24h"
-      },
-      "getable": true,
-      "setable": false,
-      "decimals": 0,
-      "units": {
-        "en": "mm",
-        "nl": "mm",
-        "de": "mm"
-      },
-      "uiComponent": "sensor",
-      "uiQuickAction": false,
-      "icon": "/assets/measure_rain_day_capability.svg"
-    },
     "measure_uv": {
       "type": "number",
       "title": {
@@ -157,18 +138,18 @@
       },
       "pair": [
         {
-            "id": "list_devices",
-            "template": "list_devices",
-            "navigation": {
-                "next": "add_devices"
-            },
-            "options": {
-              "singular": false
-            }
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          },
+          "options": {
+            "singular": false
+          }
         },
         {
-            "id": "add_devices",
-            "template": "add_devices"
+          "id": "add_devices",
+          "template": "add_devices"
         }
       ]
     },
@@ -182,11 +163,10 @@
       "class": "sensor",
       "capabilities": [
         "measure_rain",
-        "measure_rain_day",
-        "measure_wind_strength",
-        "measure_wind_angle",        
-        "measure_gust_strength",
         "measure_luminance",
+        "measure_wind_strength",
+        "measure_wind_angle",
+        "measure_gust_strength",
         "measure_uv",
         "measure_solarradiation",
         "measure_voltage"
@@ -197,18 +177,18 @@
       },
       "pair": [
         {
-            "id": "list_devices",
-            "template": "list_devices",
-            "navigation": {
-                "next": "add_devices"
-            },
-            "options": {
-              "singular": false
-            }
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          },
+          "options": {
+            "singular": false
+          }
         },
         {
-            "id": "add_devices",
-            "template": "add_devices"
+          "id": "add_devices",
+          "template": "add_devices"
         }
       ]
     }
@@ -242,7 +222,7 @@
             "type": "device",
             "name": "sky",
             "filter": "driver_id=sky"
-          },        
+          },
           {
             "type": "range",
             "name": "wind_speed",
@@ -266,7 +246,7 @@
             "type": "device",
             "name": "sky",
             "filter": "driver_id=sky"
-          },        
+          },
           {
             "type": "range",
             "name": "wind_speed",
@@ -298,16 +278,16 @@
       {
         "id": "is_windy",
         "title": {
-          "en": "It !{{is|isn't}} blowing heavy",
-          "nl": "Het waait !{{ |niet}} hard",
-          "de": "Es weht !{{ |nicht}} hart"
+          "en": "It !{{is|isn't}} windy",
+          "nl": "Het waait !{{ |niet}}",
+          "de": "Es weht !{{ |nicht}}"
         },
         "args": [
           {
             "type": "device",
             "name": "sky",
             "filter": "driver_id=sky"
-          },        
+          },
           {
             "type": "range",
             "name": "wind_speed",
