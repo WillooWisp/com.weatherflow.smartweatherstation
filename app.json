@@ -93,7 +93,7 @@
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
-      "icon": "/assets/measure_lightningstrike_capability.svg"
+      "icon": "/assets/measure_lightningstrike_count_capability.svg"
     },
     "measure_lightningstrike_distance": {
       "type": "number",
@@ -112,7 +112,7 @@
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
-      "icon": "/assets/measure_lightningstrike_capability.svg"
+      "icon": "/assets/measure_lightningstrike_distance_capability.svg"
     }
   },
   "drivers": [
