@@ -4,6 +4,7 @@ Adds support for WeatherFlow's Smart Weather Station
 
 # Changelog 
 
+* 0.3.2 Improved some capability icons
 * 0.3.1 Added Dutch and German translation
 * 0.3.0 Removed daily rain since not reported through WeatherFlow's UDP API.
 * 0.2.1 Fixed bug in rain sensor reading.

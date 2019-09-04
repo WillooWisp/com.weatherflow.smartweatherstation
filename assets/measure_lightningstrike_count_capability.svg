@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet">
+   <g id="svg_2" fill="#00ffff" class="nc-icon-wrapper">
+    <path d="m32.165957,37.808012l-1.062,0l3.585,-4.412c3.181,-1.057 5.477,-4.053 5.477,-7.588a7.998,7.998 0 0 0 -7.999,-7.998c-1.601,0 -3.083,0.48 -4.333,1.29c-1.232,-5.316 -5.974,-9.29 -11.665,-9.29c-6.626,0 -11.998,5.372 -11.998,12c0,5.446 3.632,10.038 8.604,11.504l-1.349,3.777c-6.52,-2.021 -11.255,-8.098 -11.255,-15.282c0,-8.835 7.163,-15.999 15.998,-15.999c6.004,0 11.229,3.312 13.965,8.204c0.664,-0.114 1.337,-0.205 2.033,-0.205c6.627,0 11.999,5.371 11.999,11.998s-5.373,12.001 -12,12.001zm-11.998,-14l9.998,0l-5.999,10l6.999,0l-12.998,15.998l3.6,-11.998l-6.6,0l5,-14z" clip-rule="evenodd" fill-rule="evenodd"/>
+    <line y2="14" x2="44" y1="1" x1="46" stroke-width="1.5" fill="none" stroke="#000" stroke-linecap="undefined" stroke-linejoin="undefined" />
+    <line y2="14" x2="40" y1="1" x1="42" stroke-width="1.5" fill="none" stroke="#000" stroke-linecap="undefined" stroke-linejoin="undefined" />
+    <line y2="5" x2="49.5" y1="5" x1="37.5" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="undefined" stroke-linejoin="undefined" />
+    <line y2="9" x2="49" y1="9" x1="37" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="undefined" stroke-linejoin="undefined" />
+   </g>
+</svg>

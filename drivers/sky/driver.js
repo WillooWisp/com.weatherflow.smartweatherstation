@@ -46,6 +46,8 @@ class SkyDriver extends Homey.Driver {
         if (!values || values.length === 0)
             return;
 
+        // console.log( JSON.stringify(values) )
+
         device.setCapabilityValue('measure_luminance', values[1]).catch(this.error);
         // UV (Index)
         device.setCapabilityValue('measure_uv', values[2]).catch(this.error);
@@ -68,6 +70,22 @@ class SkyDriver extends Homey.Driver {
         // Local Day Rain Accumulation: {values[11]} mm - always null with UDP API
         // Precipitation type: {values[12]}
         // Wind sample interval: {values[13]} seconds
+        
+        // new code for dayRain
+        var d = new Date(values[0]*1000);               // set d to date based on the observations epoch
+        // var reportInterval = values[9]                  // read report interval from observation
+        var dayRain = []                                // prepare dayRain object
+        var newDayRain = []                             // prepare newDayRain object
+        dayRain = Homey.ManagerSettings.get('dayRain')  // read dayRain object from Homey 
+        if ( dayRain[1] != d.getDate() ) {              // is the date in dayRain the same as from d?
+            dayRain[0] = 0                              // No -> it's a new day, reset dayRain
+        }
+        newDayRain[0] = dayRain[0] + rain               // Add the rain over the last period to the dayRain
+        newDayRain[1] = d.getDate()                     // set date to newDayRain
+        Homey.ManagerSettings.set('dayRain', newDayRain )       // save new value to Homey
+        device.setCapabilityValue('measure_rain_day', newDayRain[0]).catch(this.error); // set capability to new value
+        // console.log(newDayRain[0])
+        // end new code for dayRain      
 
         this._updateRainFlow(rain);
     }
