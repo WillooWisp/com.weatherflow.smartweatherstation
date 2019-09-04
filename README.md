@@ -4,6 +4,7 @@ Adds support for WeatherFlow's Smart Weather Station
 
 # Changelog 
 
+* 0.3.3 Readded custom rain day capability.
 * 0.3.2 Improved some capability icons
 * 0.3.1 Added Dutch and German translation
 * 0.3.0 Removed daily rain since not reported through WeatherFlow's UDP API.
