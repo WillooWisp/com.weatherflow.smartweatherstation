@@ -48,6 +48,8 @@ class SkyDriver extends Homey.Driver {
 
         // console.log( JSON.stringify(values) )
 
+        const timestamp = values[0];
+
         device.setCapabilityValue('measure_luminance', values[1]).catch(this.error);
         // UV (Index)
         device.setCapabilityValue('measure_uv', values[2]).catch(this.error);
@@ -71,23 +73,32 @@ class SkyDriver extends Homey.Driver {
         // Precipitation type: {values[12]}
         // Wind sample interval: {values[13]} seconds
         
-        // new code for dayRain
-        var d = new Date(values[0]*1000);               // set d to date based on the observations epoch
-        // var reportInterval = values[9]                  // read report interval from observation
-        var dayRain = []                                // prepare dayRain object
-        var newDayRain = []                             // prepare newDayRain object
-        dayRain = Homey.ManagerSettings.get('dayRain')  // read dayRain object from Homey 
-        if ( dayRain[1] != d.getDate() ) {              // is the date in dayRain the same as from d?
-            dayRain[0] = 0                              // No -> it's a new day, reset dayRain
-        }
-        newDayRain[0] = dayRain[0] + rain               // Add the rain over the last period to the dayRain
-        newDayRain[1] = d.getDate()                     // set date to newDayRain
-        Homey.ManagerSettings.set('dayRain', newDayRain )       // save new value to Homey
-        device.setCapabilityValue('measure_rain_day', newDayRain[0]).catch(this.error); // set capability to new value
-        // console.log(newDayRain[0])
-        // end new code for dayRain      
+        const dayRain = this.updateDayRain(timestamp, rain);
+        device.setCapabilityValue('measure_rain_day', dayRain).catch(this.error);
 
         this._updateRainFlow(rain);
+    }
+
+    updateDayRain(timestamp, rain) {
+        const dayRainAmountKey = 'DayRainAmount';
+        const dayRainDateKey = 'DayRainDate';
+
+        // New date based on the observations epoch.
+        const todaysDate = new Date(timestamp * 1000).getDate();
+        let dayRainAmount = Homey.ManagerSettings.get(dayRainAmountKey); 
+        let dayRainDate = Homey.ManagerSettings.get(dayRainDateKey);                       
+        
+        // Reset day rain amount if new day.
+        if (dayRainDate != todaysDate) {         
+            dayRainAmount = 0;             
+            Homey.ManagerSettings.set(dayRainDateKey, todaysDate); 
+        }
+
+        // Add the rain over the last period to the day rain amount.
+        dayRainAmount = dayRainAmount + rain;
+        Homey.ManagerSettings.set(dayRainAmountKey, dayRainAmount);
+
+        return dayRainAmount;
     }
 
     rainStartEvent(message) {
@@ -100,8 +111,6 @@ class SkyDriver extends Homey.Driver {
         const values = message.evt;
         if (!values || values.length === 0)
             return;
-
-        const timestamp = values[0];
 
         let tokens = {}
         let state = {}
