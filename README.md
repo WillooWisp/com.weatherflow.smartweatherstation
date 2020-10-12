@@ -4,6 +4,7 @@ Adds support for WeatherFlow's Smart Weather Station
 
 # Changelog 
 
+* 0.3.5 Added support for Tempest device.
 * 0.3.3 Readded custom rain day capability.
 * 0.3.2 Improved some capability icons
 * 0.3.1 Added Dutch and German translation
@@ -15,4 +16,4 @@ Adds support for WeatherFlow's Smart Weather Station
 
 # Note
 
-Whenever the app has been updated with new sensor readings, both Air and Sky devices must be removed and paired once again in order for the new sensor readings to show up (limitation in Homey).
+Whenever the app has been updated with new sensor readings, both Air, Sky and Tempest devices must be removed and paired once again in order for the new sensor readings to show up (limitation in Homey).
