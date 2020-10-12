@@ -102,7 +102,7 @@ class AirDriver extends Homey.Driver {
     _getDevice(deviceSerialNumber) {
         const device = this.getDevice({ "serialNumber": deviceSerialNumber });
         if (device instanceof Error) {
-            console.warn(`No device found with serialnumber '${deviceSerialNumber}'.`);
+            console.warn(`No Air device found with serialnumber '${deviceSerialNumber}'.`);
             return undefined;
         }
 

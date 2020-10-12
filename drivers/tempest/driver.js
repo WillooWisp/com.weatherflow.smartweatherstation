@@ -2,10 +2,10 @@
 
 const Homey = require('homey');
 
-class SkyDriver extends Homey.Driver {
+class TempestDriver extends Homey.Driver {
 
     onInit() {
-        this.log('SkyDriver has been inited');
+        this.log('TempestDriver has been inited');
 
         this._initFlows();
     }
@@ -13,7 +13,7 @@ class SkyDriver extends Homey.Driver {
     async onPairListDevices(data, callback) {
         await this._sleep(20000);
 
-        const skyDevices = Homey.app.devices.filter(device => device.name.startsWith("SK"));
+        const skyDevices = Homey.app.devices.filter(device => device.name.startsWith("ST"));
 
         // Required properties:
         // "data": { "id": "abcd" },
@@ -32,7 +32,7 @@ class SkyDriver extends Homey.Driver {
     }
 
     updateObservations(message) {
-        // console.log(`Sky observation: ${JSON.stringify(message)}`);
+        //console.log(`Tempest observation: ${JSON.stringify(message)}`);
 
         const device = this._getDevice(message.serial_number);
         if (!device)
@@ -46,33 +46,37 @@ class SkyDriver extends Homey.Driver {
         if (!values || values.length === 0)
             return;
 
-        // console.log( JSON.stringify(values) )
+        //console.log( JSON.stringify(values) )
 
         const timestamp = values[0];
-
-        device.setCapabilityValue('measure_luminance', values[1]).catch(this.error);
+        // Air Temperature: (C)
+        device.setCapabilityValue('measure_temperature', values[7]).catch(this.error);
+        // Station Pressure: (MB)
+        device.setCapabilityValue('measure_pressure', values[6]).catch(this.error);
+        // Relative Humidity: (%)
+        device.setCapabilityValue('measure_humidity', values[8]).catch(this.error);
+        // Luminance
+        device.setCapabilityValue('measure_luminance', values[9]).catch(this.error);
         // UV (Index)
-        device.setCapabilityValue('measure_uv', values[2]).catch(this.error);
+        device.setCapabilityValue('measure_uv', values[10]).catch(this.error);
         // Wind average (m/s)
-        device.setCapabilityValue('measure_wind_strength', values[5] * 3.6).catch(this.error);
+        device.setCapabilityValue('measure_wind_strength', values[2] * 3.6).catch(this.error);
         // Wind direction (degrees)
-        device.setCapabilityValue('measure_wind_angle', values[7]).catch(this.error);
+        device.setCapabilityValue('measure_wind_angle', values[4]).catch(this.error);
         // Wind gust (m/s)
-        device.setCapabilityValue('measure_gust_strength', values[6] * 3.6).catch(this.error);
+        device.setCapabilityValue('measure_gust_strength', values[3] * 3.6).catch(this.error);
+        // Lightning strike count
+        device.setCapabilityValue('measure_lightningstrike_count', values[15]).catch(this.error);
+        // Lightning strike distance
+        device.setCapabilityValue('measure_lightningstrike_distance', values[14]).catch(this.error);
         // Rain accumulated (mm)
-        const rain = values[3];
+        const rain = values[12];
         device.setCapabilityValue('measure_rain', rain).catch(this.error);
         // Solar radiation: (W/m^2)
-        device.setCapabilityValue('measure_solarradiation', values[10]).catch(this.error);
+        device.setCapabilityValue('measure_solarradiation', values[11]).catch(this.error);
         // Battery: (V)
-        device.setCapabilityValue('measure_voltage', values[8]).catch(this.error);
+        device.setCapabilityValue('measure_voltage', values[16]).catch(this.error);
 
-        // Wind lull: {values[4]} m/s
-        // Report interval: {values[9]} minutes
-        // Local Day Rain Accumulation: {values[11]} mm - always null with UDP API
-        // Precipitation type: {values[12]}
-        // Wind sample interval: {values[13]} seconds
-        
         const dayRain = this.updateDayRain(timestamp, rain);
         device.setCapabilityValue('measure_rain_day', dayRain).catch(this.error);
 
@@ -151,27 +155,44 @@ class SkyDriver extends Homey.Driver {
         this._lastWindSpeed = windSpeed;
     }
 
+    lightningStrikeEvent(message) {
+        console.log('Tempest Lightning strike: ${JSON.stringify(message)}');
+
+        const device = this._getDevice(message.serial_number);
+        if (!device)
+            return;
+
+        const values = message.evt;
+        if (!values || values.length === 0)
+            return;
+
+        const timestamp = values[0];
+        const distance = values[1];
+        const energy = values[2];
+    }
+
+
     _initFlows() {
-        this._rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start_sky')
+        this._rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start_tempest')
             .register();
 
-        this._windAboveTrigger = new Homey.FlowCardTriggerDevice('wind_above_sky')
+        this._windAboveTrigger = new Homey.FlowCardTriggerDevice('wind_above_tempest')
             .registerRunListener((args, state) => {
                 return Promise.resolve(state.wind_speed > args.wind_speed);
             }).register();
 
-        this._windBelowTrigger = new Homey.FlowCardTriggerDevice('wind_below_sky')
+        this._windBelowTrigger = new Homey.FlowCardTriggerDevice('wind_below_tempest')
             .registerRunListener((args, state) => {
                 return Promise.resolve(state.wind_speed <= args.wind_speed);
             }).register();
 
-        this._rainCondition = new Homey.FlowCardCondition('is_raining_sky')
+        this._rainCondition = new Homey.FlowCardCondition('is_raining_tempest')
             .register()
             .registerRunListener((args, state) => {
                 return Promise.resolve(this._isRaining);
             });
 
-        this._windCondition = new Homey.FlowCardCondition('is_windy_sky')
+        this._windCondition = new Homey.FlowCardCondition('is_windy_tempest')
             .register()
             .registerRunListener((args, state) => {
                 return Promise.resolve(this._lastWindSpeed > args.wind_speed);
@@ -185,7 +206,7 @@ class SkyDriver extends Homey.Driver {
     _getDevice(deviceSerialNumber) {
         const device = this.getDevice({ "serialNumber": deviceSerialNumber });
         if (device instanceof Error) {
-            console.warn(`No Sky device found with serialnumber '${deviceSerialNumber}'.`);
+            console.warn(`No Tempest device found with serialnumber '${deviceSerialNumber}'.`);
             return undefined;
         }
 
@@ -201,4 +222,4 @@ class SkyDriver extends Homey.Driver {
     }
 }
 
-module.exports = SkyDriver;
+module.exports = TempestDriver;

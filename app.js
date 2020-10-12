@@ -6,6 +6,7 @@ const server = dgram.createSocket('udp4');
 
 const airDriverName = "air";
 const skyDriverName = "sky";
+const tempestDriverName = "tempest";
 
 class SmartWeatherStationApp extends Homey.App {
 	
@@ -16,6 +17,7 @@ class SmartWeatherStationApp extends Homey.App {
 
 		this._airDriver = Homey.ManagerDrivers.getDriver(airDriverName);
 		this._skyDriver = Homey.ManagerDrivers.getDriver(skyDriverName);
+		this._tempestDriver = Homey.ManagerDrivers.getDriver(tempestDriverName);
 
 		server.on('error', (err) => {
 			console.log(`server error:\n${err.stack}`);
@@ -38,15 +40,21 @@ class SmartWeatherStationApp extends Homey.App {
 				case 'obs_sky':
 					this._skyDriver.updateObservations(udpMessage)
 					break;
+				case 'obs_st':
+					this._tempestDriver.updateObservations(udpMessage)
+					break;
 				case 'evt_strike':
 					this._airDriver.lightningStrikeEvent(udpMessage)
+					this._tempestDriver.lightningStrikeEvent(udpMessage)
 					break;	
 				case 'evt_precip':
 					this._skyDriver.rainStartEvent(udpMessage)
+					this._tempestDriver.rainStartEvent(udpMessage)
 					break;
 				case 'rapid_wind':
 					this._skyDriver.rapidWindEvent(udpMessage)
-					break;					
+					this._tempestDriver.rapidWindEvent(udpMessage)
+					break;
 			}
 		});
 	
@@ -90,7 +98,8 @@ class SmartWeatherStationApp extends Homey.App {
 	}
 
 	_hubStatus(message) {
-		// console.log(`Hub status: ${JSON.stringify(message)}`);
+		//MO - Comment this line out
+		console.log(`Hub status: ${JSON.stringify(message)}`);
 
 		// Serial number: {udpResponseMessage.SerialNumber}
 		// Uptime: {TimeSpan.FromSeconds(udpResponseMessage.Uptime).TotalHours} hours

@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
@@ -211,12 +211,57 @@
           "template": "add_devices"
         }
       ]
+    },
+    {
+      "id": "tempest",
+      "name": {
+        "en": "Tempest",
+        "nl": "Tempest",
+        "de": "Tempest"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "measure_pressure",
+        "measure_luminance",
+        "measure_uv",
+        "measure_wind_strength",
+        "measure_wind_angle",
+        "measure_gust_strength",
+        "measure_lightningstrike_count",
+        "measure_lightningstrike_distance",
+        "measure_rain",
+        "measure_rain_day",
+        "measure_solarradiation",
+        "measure_voltage"
+      ],
+      "images": {
+        "large": "/drivers/air/assets/images/large.png",
+        "small": "/drivers/air/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          },
+          "options": {
+            "singular": false
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
     }
   ],
   "flow": {
     "triggers": [
       {
-        "id": "rain_start",
+        "id": "rain_start_sky",
         "title": {
           "en": "It starts raining",
           "nl": "Het begint te regenen",
@@ -231,7 +276,22 @@
         ]
       },
       {
-        "id": "wind_above",
+        "id": "rain_start_tempest",
+        "title": {
+          "en": "It starts raining",
+          "nl": "Het begint te regenen",
+          "de": "Es beginnt zu regnen"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "tempest",
+            "filter": "driver_id=tempest"
+          }
+        ]
+      },
+      {
+        "id": "wind_above_sky",
         "title": {
           "en": "It is more wind than...",
           "nl": "Het waait harder dan...",
@@ -255,7 +315,31 @@
         ]
       },
       {
-        "id": "wind_below",
+        "id": "wind_above_tempest",
+        "title": {
+          "en": "It is more wind than...",
+          "nl": "Het waait harder dan...",
+          "de": "Es bläst härter als ..."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "tempest",
+            "filter": "driver_id=tempest"
+          },
+          {
+            "type": "range",
+            "name": "wind_speed",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "label": "m/s",
+            "labelDecimals": 0
+          }
+        ]
+      },
+      {
+        "id": "wind_below_sky",
         "title": {
           "en": "It is less wind than...",
           "nl": "Het waait minder hard dan...",
@@ -277,11 +361,35 @@
             "labelDecimals": 0
           }
         ]
+      },
+      {
+        "id": "wind_below_tempest",
+        "title": {
+          "en": "It is less wind than...",
+          "nl": "Het waait minder hard dan...",
+          "de": "Es weht weniger als..."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "tempest",
+            "filter": "driver_id=tempest"
+          },
+          {
+            "type": "range",
+            "name": "wind_speed",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "label": "m/s",
+            "labelDecimals": 0
+          }
+        ]
       }
     ],
     "conditions": [
       {
-        "id": "is_raining",
+        "id": "is_raining_sky",
         "title": {
           "en": "It !{{is|isn't}} raining",
           "nl": "Het regent !{{ |niet}}",
@@ -296,7 +404,22 @@
         ]
       },
       {
-        "id": "is_windy",
+        "id": "is_raining_tempest",
+        "title": {
+          "en": "It !{{is|isn't}} raining",
+          "nl": "Het regent !{{ |niet}}",
+          "de": "es regnet !{{ |nicht}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "tempest",
+            "filter": "driver_id=tempest"
+          }
+        ]
+      },
+      {
+        "id": "is_windy_sky",
         "title": {
           "en": "It !{{is|isn't}} windy",
           "nl": "Het waait !{{ |niet}}",
@@ -307,6 +430,30 @@
             "type": "device",
             "name": "sky",
             "filter": "driver_id=sky"
+          },
+          {
+            "type": "range",
+            "name": "wind_speed",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "label": "m/s",
+            "labelDecimals": 0
+          }
+        ]
+      },
+      {
+        "id": "is_windy_tempest",
+        "title": {
+          "en": "It !{{is|isn't}} windy",
+          "nl": "Het waait !{{ |niet}}",
+          "de": "Es weht !{{ |nicht}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "tempest",
+            "filter": "driver_id=tempest"
           },
           {
             "type": "range",
