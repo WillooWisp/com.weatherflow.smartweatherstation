@@ -1,6 +1,8 @@
 'use strict';
 
 const Homey = require('homey');
+const RainLogic = require('../rain-logic');
+const WindLogic = require('../wind-logic');
 
 class TempestDevice extends Homey.Device {
 	
