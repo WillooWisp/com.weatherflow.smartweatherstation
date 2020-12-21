@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
@@ -13,9 +13,36 @@
     "de": "Unterstützung für WeatherFlow's Smart Weather Station"
   },
   "tags": {
-    "en": [ "weatherflow", "smart", "weather", "temperature", "rain", "wind", "lightning", "sensor" ],
-    "nl": [ "weatherflow", "slim" , "weer", "temperatuur", "regen", "wind", "Bliksem", "sensor" ],
-    "de": [ "Weaterhflow", "Smart", "Wetter", "Temperatur", "Regen", "Wind", "Blitz", "Sensor" ]
+    "en": [
+      "weatherflow",
+      "smart",
+      "weather",
+      "temperature",
+      "rain",
+      "wind",
+      "lightning",
+      "sensor"
+    ],
+    "nl": [
+      "weatherflow",
+      "slim",
+      "weer",
+      "temperatuur",
+      "regen",
+      "wind",
+      "Bliksem",
+      "sensor"
+    ],
+    "de": [
+      "Weaterhflow",
+      "Smart",
+      "Wetter",
+      "Temperatur",
+      "Regen",
+      "Wind",
+      "Blitz",
+      "Sensor"
+    ]
   },
   "category": [
     "climate"
