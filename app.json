@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
@@ -211,6 +211,51 @@
           "template": "add_devices"
         }
       ]
+    },
+    {
+      "id": "tempest",
+      "name": {
+        "en": "Tempest",
+        "nl": "Tempest",
+        "de": "Tempest"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "measure_pressure",
+        "measure_luminance",
+        "measure_uv",
+        "measure_wind_strength",
+        "measure_wind_angle",
+        "measure_gust_strength",
+        "measure_lightningstrike_count",
+        "measure_lightningstrike_distance",
+        "measure_rain",
+        "measure_rain_day",
+        "measure_solarradiation",
+        "measure_voltage"
+      ],
+      "images": {
+        "large": "/drivers/tempest/assets/images/large.png",
+        "small": "/drivers/tempest/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          },
+          "options": {
+            "singular": false
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
     }
   ],
   "flow": {
@@ -225,8 +270,8 @@
         "args": [
           {
             "type": "device",
-            "name": "sky",
-            "filter": "driver_id=sky"
+            "name": "device",
+            "filter": "driver_id=sky|tempest"
           }
         ]
       },
@@ -240,8 +285,8 @@
         "args": [
           {
             "type": "device",
-            "name": "sky",
-            "filter": "driver_id=sky"
+            "name": "device",
+            "filter": "driver_id=sky|tempest"
           },
           {
             "type": "range",
@@ -264,8 +309,8 @@
         "args": [
           {
             "type": "device",
-            "name": "sky",
-            "filter": "driver_id=sky"
+            "name": "device",
+            "filter": "driver_id=sky|tempest"
           },
           {
             "type": "range",
@@ -290,8 +335,8 @@
         "args": [
           {
             "type": "device",
-            "name": "sky",
-            "filter": "driver_id=sky"
+            "name": "device",
+            "filter": "driver_id=sky|tempest"
           }
         ]
       },
@@ -305,8 +350,8 @@
         "args": [
           {
             "type": "device",
-            "name": "sky",
-            "filter": "driver_id=sky"
+            "name": "device",
+            "filter": "driver_id=sky|tempest"
           },
           {
             "type": "range",

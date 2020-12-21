@@ -3,20 +3,28 @@
 const Homey = require('homey');
 const DeviceLookup = require('../device-lookup');
 
-class SkyDriver extends Homey.Driver {
-    
+class TempestDriver extends Homey.Driver {
+
     onInit() {
-        this._deviceLookup = new DeviceLookup('SK', this);
+        this._deviceLookup = new DeviceLookup('ST', this);
         this._initFlows();
-        this.log('SkyDriver has been inited');
+        this.log('TempestDriver has been inited');
     }
 
     async onPairListDevices(data, callback) {
         await this._sleep(20000);
 
-        const skyDevices = Homey.app.devices.filter(device => device.name.startsWith('SK'));
+        const tempestDevices = Homey.app.devices.filter(device => device.name.startsWith('ST'));
 
-        callback(null, skyDevices);
+        callback(null, tempestDevices);
+    }
+
+    updateObservations(message) {
+        const device = this._deviceLookup.getDevice(message.serial_number);
+        if (!device)
+            return;
+
+        device.updateObservations(message);
     }
 
     updateObservations(message) {
@@ -62,7 +70,7 @@ class SkyDriver extends Homey.Driver {
             .registerRunListener((args, state) => {
                 return Promise.resolve(args.device.checkIsRaining);
             });
-            
+
         this._windCondition = new Homey.FlowCardCondition('is_windy')
             .register()
             .registerRunListener((args, state) => {
@@ -75,4 +83,4 @@ class SkyDriver extends Homey.Driver {
     }
 }
 
-module.exports = SkyDriver;
+module.exports = TempestDriver;

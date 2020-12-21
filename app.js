@@ -2,10 +2,11 @@
 
 const Homey = require('homey');
 const dgram = require('dgram');
-const server = dgram.createSocket('udp4');
+const server = dgram.createSocket({type: 'udp4', reuseAddr: true });
 
 const airDriverName = "air";
 const skyDriverName = "sky";
+const tempestDriverName = "tempest";
 
 class SmartWeatherStationApp extends Homey.App {
 	
@@ -16,6 +17,7 @@ class SmartWeatherStationApp extends Homey.App {
 
 		this._airDriver = Homey.ManagerDrivers.getDriver(airDriverName);
 		this._skyDriver = Homey.ManagerDrivers.getDriver(skyDriverName);
+		this._tempestDriver = Homey.ManagerDrivers.getDriver(tempestDriverName);
 
 		server.on('error', (err) => {
 			console.log(`server error:\n${err.stack}`);
@@ -33,20 +35,25 @@ class SmartWeatherStationApp extends Homey.App {
 					this._deviceStatus(udpMessage);
 					break;
 				case 'obs_air':
-					this._airDriver.updateObservations(udpMessage)
+					this._airDriver.updateObservations(udpMessage);
 					break;
 				case 'obs_sky':
-					this._skyDriver.updateObservations(udpMessage)
+					this._skyDriver.updateObservations(udpMessage);
+					break;
+				case 'obs_st':
+					this._tempestDriver.updateObservations(udpMessage);
 					break;
 				case 'evt_strike':
-					this._airDriver.lightningStrikeEvent(udpMessage)
+					this._airDriver.lightningStrikeEvent(udpMessage);
 					break;	
 				case 'evt_precip':
-					this._skyDriver.rainStartEvent(udpMessage)
+					this._skyDriver.rainStartEvent(udpMessage);
+					this._tempestDriver.rainStartEvent(udpMessage);
 					break;
 				case 'rapid_wind':
-					this._skyDriver.rapidWindEvent(udpMessage)
-					break;					
+					this._skyDriver.rapidWindEvent(udpMessage);
+					this._tempestDriver.rapidWindEvent(udpMessage);
+					break;
 			}
 		});
 	
