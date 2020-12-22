@@ -1,11 +1,9 @@
 'use strict';
 
+const Homey = require('homey');
 const https = require('https');
 
-class CloudLogger {    
-	_storageAccount = '';
-	_tableName = '';
-	_sasToken = '';
+class CloudLogger {
 
 	sendLog(message, timestamp, type, serialNumber) { 
 		timestamp *= 1000;
@@ -18,10 +16,10 @@ class CloudLogger {
 		// console.log("Log: " + data);
 
 		const options = {
-			hostname: `${this._storageAccount}.table.core.windows.net`,
+			hostname: `${Homey.env.AZURE_STORAGE_ACCOUNT_NAME}.table.core.windows.net`,
 			method: 'POST',
 			port: 443,
-			path: `/${this._tableName}?${this._sasToken}`,
+			path: `/${Homey.env.AZURE_STORAGE_TABLE_NAME}?${Homey.env.AZURE_STORAGE_SAS_TOKEN}`,
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
