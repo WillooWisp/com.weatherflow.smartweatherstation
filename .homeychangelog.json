@@ -10,5 +10,8 @@
   },
   "0.3.8": {
     "en": "Removed debug logging."
+  },
+  "0.3.9": {
+    "en": "Fixed issue with rain triggers."
   }
 }
