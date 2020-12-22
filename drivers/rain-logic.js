@@ -47,16 +47,20 @@ class RainLogic {
 
     _triggerIsRaining(isRaining) {
         let tokens = {}
-        let state = { 'isRaining': isRaining }
+        let state = {}
 
         const driver = this._device.getDriver();
-        driver.rainStartTrigger.trigger(this._device, tokens, state)
-            .then()
-            .catch(this.error);
 
-        driver.rainStopTrigger.trigger(this._device, tokens, state)
-            .then()
-            .catch(this.error);
+        if (isRaining)
+        {
+            driver.rainStartTrigger.trigger(this._device, tokens, state)
+                .then()
+                .catch(this.error);
+        } else {
+            driver.rainStopTrigger.trigger(this._device, tokens, state)
+                .then()
+                .catch(this.error);
+        }
     }
 }
 

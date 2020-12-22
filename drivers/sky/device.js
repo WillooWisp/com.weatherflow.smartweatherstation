@@ -83,9 +83,9 @@ class SkyDevice extends Homey.Device {
 	rainStartEvent(message) {
         // console.log(`Sky rain start: ${JSON.stringify(message)}`);
 
-        // this._cloudLogger.sendLog(
-        //     {}, message.evt[0], message.type, message.serial_number
-        // );
+        this._cloudLogger.sendLog(
+            {}, message.evt[0], message.type, message.serial_number
+        );
 
         this._rainLogic.rainStartEvent(message);
     }
@@ -109,7 +109,8 @@ class SkyDevice extends Homey.Device {
 	}
 	
 	checkIsWindy(windSpeedLimit) {
-		this._windLogic.isWindy(windSpeedLimit);
+        const isWindy = this._windLogic.isWindy(windSpeedLimit);
+        return isWindy;
 	}
 }
 

@@ -16,9 +16,9 @@ class WindLogic {
         if (!values || values.length === 0)
             return;
 
-        const timestamp = values[0];
+        // const timestamp = values[0];
         const windSpeed = values[1];
-        const windDirection = values[2];
+        // const windDirection = values[2];
 
         let tokens = {}
         let state = { 'windSpeed': windSpeed }

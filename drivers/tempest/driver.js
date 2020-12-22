@@ -53,14 +53,10 @@ class TempestDriver extends Homey.Driver {
 
     _initFlows() {
         this.rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start')
-            .registerRunListener((args, state) => {
-                return Promise.resolve(state.isRaining);
-            }).register();
+            .register();
 
         this.rainStopTrigger = new Homey.FlowCardTriggerDevice('rain_stop')
-            .registerRunListener((args, state) => {
-                return Promise.resolve(!state.isRaining);
-            }).register();
+            .register();
 
         this.windAboveTrigger = new Homey.FlowCardTriggerDevice('wind_above')
             .registerRunListener((args, state) => {

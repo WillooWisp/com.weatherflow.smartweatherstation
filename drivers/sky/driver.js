@@ -45,34 +45,34 @@ class SkyDriver extends Homey.Driver {
 
     _initFlows() {
         this.rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start')
-            .registerRunListener((args, state) => {
-                return Promise.resolve(state.isRaining);
-            }).register();
+            .register();
 
         this.rainStopTrigger = new Homey.FlowCardTriggerDevice('rain_stop')
-            .registerRunListener((args, state) => {
-                return Promise.resolve(!state.isRaining);
-            }).register();
+            .register();
 
         this.windAboveTrigger = new Homey.FlowCardTriggerDevice('wind_above')
             .registerRunListener((args, state) => {
+                // console.log(`Triggering wind above '${state.windSpeed}' (${state.windSpeed > args.wind_speed})...`);
                 return Promise.resolve(state.windSpeed > args.wind_speed);
             }).register();
 
         this.windBelowTrigger = new Homey.FlowCardTriggerDevice('wind_below')
             .registerRunListener((args, state) => {
+                // console.log(`Triggering wind below '${state.windSpeed}' (${state.windSpeed <= args.wind_speed})...`);
                 return Promise.resolve(state.windSpeed <= args.wind_speed);
             }).register();
 
         this._rainCondition = new Homey.FlowCardCondition('is_raining')
             .register()
             .registerRunListener((args, state) => {
-                return Promise.resolve(args.device.checkIsRaining);
+                // console.log(`Is raining condition '${args.device.checkIsRaining()}'...`);
+                return Promise.resolve(args.device.checkIsRaining());
             });
             
         this._windCondition = new Homey.FlowCardCondition('is_windy')
             .register()
             .registerRunListener((args, state) => {
+                // console.log(`Is windy condition '${args.device.checkIsWindy(args.wind_speed)}'...`);
                 return Promise.resolve(args.device.checkIsWindy(args.wind_speed));
             });
     }

@@ -87,7 +87,8 @@ class TempestDevice extends Homey.Device {
 	}
 	
 	checkIsWindy(windSpeedLimit) {
-		this._windLogic.isWindy(windSpeedLimit);
+        const isWindy = this._windLogic.isWindy(windSpeedLimit);
+        return isWindy;
 	}
 }
 
