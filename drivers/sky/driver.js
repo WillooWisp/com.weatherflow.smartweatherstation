@@ -32,7 +32,7 @@ class SkyDriver extends Homey.Driver {
         if (!device)
             return;
         
-        device.rainStartEvent(message, this._rainStartTrigger);
+        device.rainStartEvent(message);
     }
 
     async rapidWindEvent(message) {
@@ -40,21 +40,28 @@ class SkyDriver extends Homey.Driver {
         if (!device)
             return;
 
-        device.rapidWindEvent(message, this._windAboveTrigger, this._windBelowTrigger);
+        device.rapidWindEvent(message);
     }
 
     _initFlows() {
-        this._rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start')
-            .register();
-
-        this._windAboveTrigger = new Homey.FlowCardTriggerDevice('wind_above')
+        this.rainStartTrigger = new Homey.FlowCardTriggerDevice('rain_start')
             .registerRunListener((args, state) => {
-                return Promise.resolve(state.wind_speed > args.wind_speed);
+                return Promise.resolve(state.isRaining);
             }).register();
 
-        this._windBelowTrigger = new Homey.FlowCardTriggerDevice('wind_below')
+        this.rainStopTrigger = new Homey.FlowCardTriggerDevice('rain_stop')
             .registerRunListener((args, state) => {
-                return Promise.resolve(state.wind_speed <= args.wind_speed);
+                return Promise.resolve(!state.isRaining);
+            }).register();
+
+        this.windAboveTrigger = new Homey.FlowCardTriggerDevice('wind_above')
+            .registerRunListener((args, state) => {
+                return Promise.resolve(state.windSpeed > args.wind_speed);
+            }).register();
+
+        this.windBelowTrigger = new Homey.FlowCardTriggerDevice('wind_below')
+            .registerRunListener((args, state) => {
+                return Promise.resolve(state.windSpeed <= args.wind_speed);
             }).register();
 
         this._rainCondition = new Homey.FlowCardCondition('is_raining')

@@ -33,21 +33,30 @@ class RainLogic {
         
     updateRainFlow(rain) {
         this.isRaining = rain > 0;
+        this._triggerIsRaining(this.isRaining);
     }
 
-    rainStartEvent(message, rainStartTrigger) {
+    rainStartEvent(message) {
         const values = message.evt;
         if (!values || values.length === 0)
             return;
 
-        let tokens = {}
-        let state = {}
-
         this.isRaining = true;
+        this._triggerIsRaining(this.isRaining);
+    }
 
-        rainStartTrigger.trigger(this._device, tokens, state)
+    _triggerIsRaining(isRaining) {
+        let tokens = {}
+        let state = { 'isRaining': isRaining }
+
+        const driver = this._device.getDriver();
+        driver.rainStartTrigger.trigger(this._device, tokens, state)
             .then()
-            .catch(this.error)
+            .catch(this.error);
+
+        driver.rainStopTrigger.trigger(this._device, tokens, state)
+            .then()
+            .catch(this.error);
     }
 }
 

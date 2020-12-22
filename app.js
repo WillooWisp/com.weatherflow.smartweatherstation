@@ -8,8 +8,8 @@ const airDriverName = "air";
 const skyDriverName = "sky";
 const tempestDriverName = "tempest";
 
-class SmartWeatherStationApp extends Homey.App {
-	
+class SmartWeatherStationApp extends Homey.App {	
+
 	onInit() {
 		this.log('SmartWeatherStationApp is running...');
 
@@ -26,6 +26,7 @@ class SmartWeatherStationApp extends Homey.App {
 	
 		server.on('message', (msg, rinfo) => {
 			var udpMessage = JSON.parse(msg);
+
 			switch (udpMessage.type) {
 				case 'hub_status':
 					 this._hubStatus(udpMessage);
@@ -56,11 +57,6 @@ class SmartWeatherStationApp extends Homey.App {
 					break;
 			}
 		});
-	
-		// server.on('listening', () => {
-		//     const address = server.address();
-		//     console.log(`server listening ${address.address}:${address.port}`);
-		// });
 	
 		server.bind(50222);
 	}

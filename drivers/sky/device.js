@@ -3,12 +3,14 @@
 const Homey = require('homey');
 const RainLogic = require('../rain-logic');
 const WindLogic = require('../wind-logic');
+// const CloudLogger = require('../cloud-logger');
 
 class SkyDevice extends Homey.Device {
 	
 	onInit() {
 		this._rainLogic = new RainLogic(this);
 		this._windLogic = new WindLogic(this);
+        // this._cloudLogger = new CloudLogger();
 		this.log('SkyDevice has been inited');
 	}
 		
@@ -31,9 +33,23 @@ class SkyDevice extends Homey.Device {
         if (!values || values.length === 0)
             return;
 
-        // console.log( JSON.stringify(values) )
-
         const timestamp = values[0];
+
+        // console.log(JSON.stringify(values));
+
+        // this._cloudLogger.sendLog(
+        //     { 
+        //         luminance: values[1], 
+        //         uv: values[2], 
+        //         rain: values[3], 
+        //         precipitationType: values[12], 
+        //         windLull: values[4],
+        //         windStrength: values[5],            
+        //         windGust: values[6],
+        //         windDirection: values[7]
+        //     },
+        //     timestamp, message.type, message.serial_number
+        // );
 
         this.setCapabilityValue('measure_luminance', values[1]).catch(this.error);
         // UV (Index)
@@ -64,16 +80,28 @@ class SkyDevice extends Homey.Device {
         this._rainLogic.updateRainFlow(rain);
 	}
 
-	rainStartEvent(message, rainStartTrigger) {
+	rainStartEvent(message) {
         // console.log(`Sky rain start: ${JSON.stringify(message)}`);
 
-        this._rainLogic.rainStartEvent(message, rainStartTrigger);
+        // this._cloudLogger.sendLog(
+        //     {}, message.evt[0], message.type, message.serial_number
+        // );
+
+        this._rainLogic.rainStartEvent(message);
     }
 
-    rapidWindEvent(message, windAboveTrigger, windBelowTrigger) {
+    rapidWindEvent(message) {
         // console.log(`Sky rapid wind: ${JSON.stringify(message)}`);
 
-        this._windLogic.rapidWindEvent(message, windAboveTrigger, windBelowTrigger);
+        // this._cloudLogger.sendLog(
+        //     { 
+        //         windStrength: message.ob[1],
+        //         windDirection: message.ob[2]
+        //     },
+        //     message.ob[0], message.type, message.serial_number
+        // );
+
+        this._windLogic.rapidWindEvent(message);
 	}
 
 	checkIsRaining() {

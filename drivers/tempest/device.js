@@ -70,16 +70,16 @@ class TempestDevice extends Homey.Device {
         this._rainLogic.updateRainFlow(rain);
 	}
 
-	rainStartEvent(message, rainStartTrigger) {
+	rainStartEvent(message) {
         // console.log(`Tempest rain start: ${JSON.stringify(message)}`);
 
-        this._rainLogic.rainStartEvent(message, rainStartTrigger);
+        this._rainLogic.rainStartEvent(message);
     }
 
-    rapidWindEvent(message, windAboveTrigger, windBelowTrigger) {
+    rapidWindEvent(message) {
         // console.log(`Tempest rapid wind: ${JSON.stringify(message)}`);
 
-        this._windLogic.rapidWindEvent(message, windAboveTrigger, windBelowTrigger);
+        this._windLogic.rapidWindEvent(message);
 	}
 
 	checkIsRaining() {

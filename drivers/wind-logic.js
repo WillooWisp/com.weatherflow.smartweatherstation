@@ -11,7 +11,7 @@ class WindLogic {
         return this._lastWindSpeed > windSpeedLimit;
     }    
     
-    rapidWindEvent(message, windAboveTrigger, windBelowTrigger) {
+    rapidWindEvent(message) {
         const values = message.ob;
         if (!values || values.length === 0)
             return;
@@ -21,13 +21,14 @@ class WindLogic {
         const windDirection = values[2];
 
         let tokens = {}
-        let state = { 'wind_speed': windSpeed }
+        let state = { 'windSpeed': windSpeed }
 
-        windAboveTrigger.trigger(this._device, tokens, state)
+        const driver = this._device.getDriver();
+        driver.windAboveTrigger.trigger(this._device, tokens, state)
             .then()
             .catch(this.error)
 
-        windBelowTrigger.trigger(this._device, tokens, state)
+        driver.windBelowTrigger.trigger(this._device, tokens, state)
             .then()
             .catch(this.error)
 
