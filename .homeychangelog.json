@@ -16,5 +16,8 @@
   },
   "0.3.10": {
     "en": "Only invoke rain trigger change once."
+  },
+  "0.3.11": {
+    "en": "Fixed missing timestamp."
   }
 }

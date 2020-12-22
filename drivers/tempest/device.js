@@ -3,13 +3,15 @@
 const Homey = require('homey');
 const RainLogic = require('../rain-logic');
 const WindLogic = require('../wind-logic');
+// const CloudLogger = require('../cloud-logger');
 
 class TempestDevice extends Homey.Device {
 	
 	onInit() {
-		this._rainLogic = new RainLogic(this);
-		this._windLogic = new WindLogic(this);
-		this.log('TempestDevice has been inited');
+        this._rainLogic = new RainLogic(this);
+        this._windLogic = new WindLogic(this);
+        // this._cloudLogger = new CloudLogger();
+        this.log('TempestDevice has been inited');
 	}
 		
 	// this method is called when the Device is added
@@ -33,9 +35,24 @@ class TempestDevice extends Homey.Device {
         if (!values || values.length === 0)
             return;
 
-        //console.log( JSON.stringify(values) )
-
         const timestamp = values[0];
+
+        //console.log(JSON.stringify(values));
+
+        // this._cloudLogger.sendLog(
+        //     { 
+        //         luminance: values[9], 
+        //         uv: values[10], 
+        //         rain: values[12], 
+        //         precipitationType: values[13], 
+        //         windLull: values[1],
+        //         windStrength: values[2],            
+        //         windGust: values[3],
+        //         windDirection: values[4]
+        //     },
+        //     timestamp, message.type, message.serial_number
+        // );
+
         // Air Temperature: (C)
         this.setCapabilityValue('measure_temperature', values[7]).catch(this.error);
         // Station Pressure: (MB)
@@ -72,6 +89,10 @@ class TempestDevice extends Homey.Device {
 
 	rainStartEvent(message) {
         // console.log(`Tempest rain start: ${JSON.stringify(message)}`);
+
+        // this._cloudLogger.sendLog(
+        //     {}, message.evt[0], message.type, message.serial_number
+        // );
 
         this._rainLogic.rainStartEvent(message);
     }

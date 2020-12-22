@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
