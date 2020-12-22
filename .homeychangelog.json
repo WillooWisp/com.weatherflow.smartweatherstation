@@ -7,5 +7,8 @@
   },
   "0.3.7": {
     "en": "Added rain stop trigger."
+  },
+  "0.3.8": {
+    "en": "Removed debug logging."
   }
 }
