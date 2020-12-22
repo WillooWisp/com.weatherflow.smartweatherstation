@@ -4,5 +4,8 @@
   },
   "0.3.6": {
     "en": "Added missing imports for Tempest device."
+  },
+  "0.3.7": {
+    "en": "Added rain stop trigger."
   }
 }

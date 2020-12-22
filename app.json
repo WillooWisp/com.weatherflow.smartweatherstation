@@ -1,6 +1,6 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "brandColor": "#3077BF",
@@ -347,7 +347,7 @@
           "en": "It is more wind than...",
           "nl": "Het waait harder dan...",
           "de": "Es bläst härter als...",
-          "sv": "Det blåser mer än..."          
+          "sv": "Det blåser mer än..."
         },
         "args": [
           {
