@@ -32,8 +32,12 @@ class RainLogic {
     }
         
     updateRainFlow(rain) {
-        this.isRaining = rain > 0;
-        this._triggerIsRaining(this.isRaining);
+        const isRaining = rain > 0;        
+        if (this.isRaining === isRaining)
+            return;
+
+        this.isRaining = isRaining;
+        this._invokeRainTrigger(this.isRaining);
     }
 
     rainStartEvent(message) {
@@ -41,11 +45,14 @@ class RainLogic {
         if (!values || values.length === 0)
             return;
 
+        if (this.isRaining)
+            return;
+
         this.isRaining = true;
-        this._triggerIsRaining(this.isRaining);
+        this._invokeRainTrigger(this.isRaining);
     }
 
-    _triggerIsRaining(isRaining) {
+    _invokeRainTrigger(isRaining) {
         let tokens = {}
         let state = {}
 
