@@ -109,8 +109,8 @@
       "units": {
         "en": "index",
         "nl": "index",
-        "de": "index",
-        "sv": "index"
+        "de": "Index",
+        "sv": "Index"
       },
       "uiComponent": "sensor",
       "insights": true,
