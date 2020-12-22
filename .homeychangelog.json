@@ -13,5 +13,8 @@
   },
   "0.3.9": {
     "en": "Fixed issue with rain triggers."
+  },
+  "0.3.10": {
+    "en": "Only invoke rain trigger change once."
   }
 }
