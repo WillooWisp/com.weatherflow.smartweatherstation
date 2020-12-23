@@ -1,23 +1,32 @@
 {
+  "0.1.0": {
+    "en": "Initial release with support for some sensor readings on Air and Sky devices."
+  },
+  "0.1.1": {
+    "en": "Increased the time searching for Air and Sky devices when pairing."
+  },
+  "0.2.0": {
+    "en": "Added more sensor readings on both Air and Sky devices. Air and Sky devices must be removed and added again in order for the new sensor readings to show up. Flow triggers and conditions added for rain started and wind above/below specified threshold."
+  },
+  "0.3.0": {
+    "en": "Removed daily rain since not reported through WeatherFlow's UDP API."
+  },
+  "0.3.1": {
+    "en": "Added Dutch and German translation"
+  },
+  "0.3.2": {
+    "en": "Improved some capability icons"
+  },
+  "0.3.3": {
+    "en": "Readded custom rain day capability."
+  },
   "0.3.5": {
     "en": "Added support for Tempest device."
-  },
-  "0.3.6": {
-    "en": "Added missing imports for Tempest device."
   },
   "0.3.7": {
     "en": "Added rain stop trigger."
   },
-  "0.3.8": {
-    "en": "Removed debug logging."
-  },
-  "0.3.9": {
-    "en": "Fixed issue with rain triggers."
-  },
   "0.3.10": {
-    "en": "Only invoke rain trigger change once."
-  },
-  "0.3.11": {
-    "en": "Fixed missing timestamp."
+    "en": "Only invoke rain trigger change once, if no state changed."
   }
 }
