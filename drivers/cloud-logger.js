@@ -10,7 +10,7 @@ class CloudLogger {
 		message.timestamp = new Date(timestamp).toISOString();
 		message.type = type;
 		message.PartitionKey = serialNumber;
-		message.RowKey = timestamp.toString();
+		message.RowKey = (8640000000000000 - timestamp).toString().padStart(19, '0');
 
 		const data = JSON.stringify(message);
 		// console.log("Log: " + data);
