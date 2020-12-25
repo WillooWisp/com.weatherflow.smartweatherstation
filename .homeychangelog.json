@@ -28,5 +28,8 @@
   },
   "0.3.10": {
     "en": "Only invoke rain trigger change once, if no state changed."
+  },
+  "0.3.13": {
+    "en": "Releasing Tempest support and rain start/stop triggers."
   }
 }
