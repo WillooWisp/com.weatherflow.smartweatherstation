@@ -31,5 +31,8 @@
   },
   "0.3.13": {
     "en": "Releasing Tempest support and rain start/stop triggers."
+  },
+  "0.4.0": {
+    "en": "Updated rain measurements to use four decimals."
   }
 }
