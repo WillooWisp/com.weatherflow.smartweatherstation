@@ -109,9 +109,16 @@ class SkyDevice extends Homey.Device {
 	}
 	
 	checkIsWindy(windSpeedLimit) {
-        const isWindy = this._windLogic.isWindy(windSpeedLimit);
-        return isWindy;
+        return this._windLogic.isWindy(windSpeedLimit);
 	}
+
+    checkWindAbove(windSpeed, windSpeedLimit) {
+        return this._windLogic.checkWindAbove(windSpeed, windSpeedLimit);
+    }
+
+    checkWindBelow(windSpeed, windSpeedLimit) {
+        return this._windLogic.checkWindBelow(windSpeed, windSpeedLimit);
+    }
 }
 
 module.exports = SkyDevice;

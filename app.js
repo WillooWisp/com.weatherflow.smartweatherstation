@@ -93,26 +93,22 @@ class SmartWeatherStationApp extends Homey.App {
         this.rainStopTrigger = this.homey.flow.getDeviceTriggerCard('rain_stop');
 
         this.windAboveTrigger = this.homey.flow.getDeviceTriggerCard('wind_above')
-            .registerRunListener(async (args, state) => {
-				this.homey.log(`Triggering wind above '${state.windSpeed}' (${state.windSpeed > args.wind_speed})...`);
-                return state.windSpeed > args.wind_speed;
+            .registerRunListener(async (args, state) => {		
+                return args.device.checkWindAbove(state.windSpeed, args.wind_speed);
             });
 
         this.windBelowTrigger = this.homey.flow.getDeviceTriggerCard('wind_below')
             .registerRunListener(async (args, state) => {
-				this.homey.log(`Triggering wind below '${state.windSpeed}' (${state.windSpeed <= args.wind_speed})...`);
-                return state.windSpeed <= args.wind_speed;
+				return args.device.checkWindBelow(state.windSpeed, args.wind_speed);
             });
 
         this._rainCondition = this.homey.flow.getConditionCard('is_raining')
             .registerRunListener(async (args, state) => {
-				// this.homey.log(`Is raining condition '${args.device.checkIsRaining()}'...`);
                 return args.device.checkIsRaining();
             });
 
         this._windCondition = this.homey.flow.getConditionCard('is_windy')
             .registerRunListener(async (args, state) => {
-				// this.homey.log(`Is windy condition '${args.device.checkIsWindy(args.wind_speed)}'...`);
                 return args.device.checkIsWindy(args.wind_speed);
             });
     }
