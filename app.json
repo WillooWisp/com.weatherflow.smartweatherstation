@@ -1,8 +1,8 @@
 {
   "id": "com.weatherflow.smartweatherstation",
-  "version": "0.4.0",
-  "compatibility": ">=1.5.0",
-  "sdk": 2,
+  "version": "0.5.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
   "brandColor": "#3077BF",
   "name": {
     "en": "Smart Weather Station"
@@ -187,6 +187,7 @@
       "uiComponent": "sensor",
       "insights": true,
       "uiQuickAction": false,
+      "flow": true,
       "icon": "/assets/measure_uv_capability.svg"
     },
     "measure_solarradiation": {
@@ -208,6 +209,7 @@
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
+      "flow": true,
       "icon": "/assets/measure_solarradiation_capability.svg"
     },
     "measure_lightningstrike_count": {
@@ -389,6 +391,12 @@
           "de": "Es beginnt zu regnen",
           "sv": "Det börjar regna"
         },
+        "titleFormatted": {
+          "en": "It starts raining",
+          "nl": "Het begint te regenen",
+          "de": "Es beginnt zu regnen",
+          "sv": "Det börjar regna"
+        },
         "args": [
           {
             "type": "device",
@@ -400,6 +408,12 @@
       {
         "id": "rain_stop",
         "title": {
+          "en": "It stops raining",
+          "nl": "Het houdt op met regenen",
+          "de": "Es hört auf zu regnen",
+          "sv": "Det slutar regna"
+        },
+        "titleFormatted": {
           "en": "It stops raining",
           "nl": "Het houdt op met regenen",
           "de": "Es hört auf zu regnen",
@@ -420,6 +434,12 @@
           "nl": "Het waait harder dan...",
           "de": "Es bläst härter als...",
           "sv": "Det blåser mer än..."
+        },
+        "titleFormatted": {
+          "en": "It is more wind than [[wind_speed]]...",
+          "nl": "Het waait harder dan [[wind_speed]]...",
+          "de": "Es bläst härter als [[wind_speed]]...",
+          "sv": "Det blåser mer än [[wind_speed]]..."
         },
         "args": [
           {
@@ -446,6 +466,12 @@
           "de": "Es weht weniger als...",
           "sv": "Det blåser mindre än..."
         },
+        "titleFormatted": {
+          "en": "It is less wind than [[wind_speed]]...",
+          "nl": "Het waait minder hard dan [[wind_speed]]...",
+          "de": "Es weht weniger als [[wind_speed]]...",
+          "sv": "Det blåser mindre än [[wind_speed]]..."
+        },
         "args": [
           {
             "type": "device",
@@ -468,6 +494,12 @@
       {
         "id": "is_raining",
         "title": {
+          "en": "It is raining",
+          "nl": "Het regent",
+          "de": "Es regnet",
+          "sv": "Det regnar"
+        },
+        "titleFormatted": {
           "en": "It !{{is|isn't}} raining",
           "nl": "Het regent !{{ |niet}}",
           "de": "es regnet !{{ |nicht}}",
@@ -484,10 +516,16 @@
       {
         "id": "is_windy",
         "title": {
-          "en": "It !{{is|isn't}} windy",
-          "nl": "Het waait !{{ |niet}}",
-          "de": "Es weht !{{ |nicht}}",
-          "sv": "Det !{{är|är inte}} blåsigt"
+          "en": "It is windy",
+          "nl": "Het waait",
+          "de": "Es weht",
+          "sv": "Det är blåsigt"
+        },
+        "titleFormatted": {
+          "en": "It is !{{more|less}} wind than [[wind_speed]]...",
+          "nl": "Het waait !{{harder|minder}} dan [[wind_speed]]...",
+          "de": "Es bläst !{{härter|weniger}} als [[wind_speed]]...",
+          "sv": "Det blåser !{{mer|mindre}} än [[wind_speed]]..."
         },
         "args": [
           {

@@ -8,24 +8,24 @@ const WindLogic = require('../wind-logic');
 class TempestDevice extends Homey.Device {
 	
 	onInit() {
-        this._rainLogic = new RainLogic(this);
-        this._windLogic = new WindLogic(this);
+        this._rainLogic = new RainLogic(this.homey, this);
+        this._windLogic = new WindLogic(this.homey, this);
         // this._cloudLogger = new CloudLogger();
         this.log('TempestDevice has been inited');
 	}
 		
 	// this method is called when the Device is added
 	onAdded() {
-		this.log('device added');
+		this.homey.log('device added');
 	}
 
 	// this method is called when the Device is deleted
 	onDeleted() {
-		this.log('device deleted');
+		this.homey.log('device deleted');
 	}
 
 	updateObservations(message) {		
-		//console.log(`Tempest observation: ${JSON.stringify(message)}`);
+		//this.homey.log(`Tempest observation: ${JSON.stringify(message)}`);
 		
 		const observations = message.obs;
         if (!observations || observations.length === 0)
@@ -37,7 +37,7 @@ class TempestDevice extends Homey.Device {
 
         const timestamp = values[0];
 
-        //console.log(JSON.stringify(values));
+        //this.homey.log(JSON.stringify(values));
 
         // this._cloudLogger.sendLog(
         //     { 
@@ -88,7 +88,7 @@ class TempestDevice extends Homey.Device {
 	}
 
 	rainStartEvent(message) {
-        // console.log(`Tempest rain start: ${JSON.stringify(message)}`);
+        // this.homey.log(`Tempest rain start: ${JSON.stringify(message)}`);
 
         // this._cloudLogger.sendLog(
         //     {}, message.evt[0], message.type, message.serial_number
@@ -98,7 +98,7 @@ class TempestDevice extends Homey.Device {
     }
 
     rapidWindEvent(message) {
-        // console.log(`Tempest rapid wind: ${JSON.stringify(message)}`);
+        // this.homey.log(`Tempest rapid wind: ${JSON.stringify(message)}`);
 
         this._windLogic.rapidWindEvent(message);
 	}

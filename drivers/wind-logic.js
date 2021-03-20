@@ -2,9 +2,10 @@
 
 class WindLogic {
     
-    constructor(device) {
-        this._lastWindSpeed = 0;
+    constructor(homey, device) {
+        this._homey = homey;
         this._device = device;
+        this._lastWindSpeed = 0;
     }
 
     isWindy(windSpeedLimit) {
@@ -23,12 +24,11 @@ class WindLogic {
         let tokens = {}
         let state = { 'windSpeed': windSpeed }
 
-        const driver = this._device.getDriver();
-        driver.windAboveTrigger.trigger(this._device, tokens, state)
+        this._homey.app.windAboveTrigger.trigger(this._device, tokens, state)
             .then()
             .catch(this.error)
 
-        driver.windBelowTrigger.trigger(this._device, tokens, state)
+        this._homey.app.windBelowTrigger.trigger(this._device, tokens, state)
             .then()
             .catch(this.error)
 

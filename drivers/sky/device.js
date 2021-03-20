@@ -8,8 +8,8 @@ const WindLogic = require('../wind-logic');
 class SkyDevice extends Homey.Device {
 	
 	onInit() {
-		this._rainLogic = new RainLogic(this);
-		this._windLogic = new WindLogic(this);
+		this._rainLogic = new RainLogic(this.homey, this);
+		this._windLogic = new WindLogic(this.homey, this);
         // this._cloudLogger = new CloudLogger();
 		this.log('SkyDevice has been inited');
 	}
@@ -35,7 +35,7 @@ class SkyDevice extends Homey.Device {
 
         const timestamp = values[0];
 
-        // console.log(JSON.stringify(values));
+        // this.homey.log(JSON.stringify(values));
 
         // this._cloudLogger.sendLog(
         //     { 
@@ -81,7 +81,7 @@ class SkyDevice extends Homey.Device {
 	}
 
 	rainStartEvent(message) {
-        // console.log(`Sky rain start: ${JSON.stringify(message)}`);
+        // this.homey.log(`Sky rain start: ${JSON.stringify(message)}`);
 
         // this._cloudLogger.sendLog(
         //     {}, message.evt[0], message.type, message.serial_number
@@ -91,7 +91,7 @@ class SkyDevice extends Homey.Device {
     }
 
     rapidWindEvent(message) {
-        // console.log(`Sky rapid wind: ${JSON.stringify(message)}`);
+        // this.homey.log(`Sky rapid wind: ${JSON.stringify(message)}`);
 
         // this._cloudLogger.sendLog(
         //     { 

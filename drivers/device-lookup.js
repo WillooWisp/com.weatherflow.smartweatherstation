@@ -11,13 +11,13 @@ class DeviceLookup {
         if (!deviceSerialNumber.startsWith(this._idPrefix))
             return undefined;
 
-        const device = this._driver.getDevice({ "serialNumber": deviceSerialNumber });
-        if (device instanceof Error) {
+        try {
+            const device = this._driver.getDevice({ "serialNumber": deviceSerialNumber });
+            return device;
+        } catch (error) {
             console.warn(`No device found with serialnumber '${deviceSerialNumber}'.`);
             return undefined;
         }
-
-        return device;
     }
 }
 

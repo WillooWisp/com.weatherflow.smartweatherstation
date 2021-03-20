@@ -15,12 +15,14 @@ class SmartWeatherStationApp extends Homey.App {
 
 		this.devices = [];
 
-		this._airDriver = Homey.ManagerDrivers.getDriver(airDriverName);
-		this._skyDriver = Homey.ManagerDrivers.getDriver(skyDriverName);
-		this._tempestDriver = Homey.ManagerDrivers.getDriver(tempestDriverName);
+		this._initFlows();
+
+		let airDriver;
+		let skyDriver;
+		let tempestDriver;
 
 		server.on('error', (err) => {
-			console.log(`server error:\n${err.stack}`);
+			this.homey.log(`server error:\n${err.stack}`);
 			server.close();
 		});
 	
@@ -36,29 +38,92 @@ class SmartWeatherStationApp extends Homey.App {
 					this._deviceStatus(udpMessage);
 					break;
 				case 'obs_air':
-					this._airDriver.updateObservations(udpMessage);
+					airDriver = this._getDriver(airDriverName);
+					if (airDriver) {
+						airDriver.updateObservations(udpMessage);
+					}
 					break;
 				case 'obs_sky':
-					this._skyDriver.updateObservations(udpMessage);
+					skyDriver = this._getDriver(skyDriverName);
+					if (skyDriver) {
+						skyDriver.updateObservations(udpMessage);
+					}
 					break;
 				case 'obs_st':
-					this._tempestDriver.updateObservations(udpMessage);
+					tempestDriver = this._getDriver(tempestDriverName);
+					if (tempestDriver) {
+						tempestDriver.updateObservations(udpMessage);
+					}
 					break;
 				case 'evt_strike':
-					this._airDriver.lightningStrikeEvent(udpMessage);
+					airDriver = this._getDriver(airDriverName);
+					if (airDriver) {
+						airDriver.lightningStrikeEvent(udpMessage);
+					}
 					break;	
 				case 'evt_precip':
-					this._skyDriver.rainStartEvent(udpMessage);
-					this._tempestDriver.rainStartEvent(udpMessage);
+					skyDriver = this._getDriver(skyDriverName);
+					if (skyDriver) {
+						skyDriver.rainStartEvent(udpMessage);
+					}
+					tempestDriver = this._getDriver(tempestDriverName);
+					if (tempestDriver) {
+						tempestDriver.rainStartEvent(udpMessage);
+					}
 					break;
 				case 'rapid_wind':
-					this._skyDriver.rapidWindEvent(udpMessage);
-					this._tempestDriver.rapidWindEvent(udpMessage);
+					skyDriver = this._getDriver(skyDriverName);
+					if (skyDriver) {
+						skyDriver.rapidWindEvent(udpMessage);
+					}
+					tempestDriver = this._getDriver(tempestDriverName);
+					if (tempestDriver) {
+						tempestDriver.rapidWindEvent(udpMessage);
+					}
 					break;
 			}
 		});
 	
 		server.bind(50222);
+	}
+
+	_initFlows() {
+        this.rainStartTrigger = this.homey.flow.getDeviceTriggerCard('rain_start');
+
+        this.rainStopTrigger = this.homey.flow.getDeviceTriggerCard('rain_stop');
+
+        this.windAboveTrigger = this.homey.flow.getDeviceTriggerCard('wind_above')
+            .registerRunListener(async (args, state) => {
+				this.homey.log(`Triggering wind above '${state.windSpeed}' (${state.windSpeed > args.wind_speed})...`);
+                return state.windSpeed > args.wind_speed;
+            });
+
+        this.windBelowTrigger = this.homey.flow.getDeviceTriggerCard('wind_below')
+            .registerRunListener(async (args, state) => {
+				this.homey.log(`Triggering wind below '${state.windSpeed}' (${state.windSpeed <= args.wind_speed})...`);
+                return state.windSpeed <= args.wind_speed;
+            });
+
+        this._rainCondition = this.homey.flow.getConditionCard('is_raining')
+            .registerRunListener(async (args, state) => {
+				// this.homey.log(`Is raining condition '${args.device.checkIsRaining()}'...`);
+                return args.device.checkIsRaining();
+            });
+
+        this._windCondition = this.homey.flow.getConditionCard('is_windy')
+            .registerRunListener(async (args, state) => {
+				// this.homey.log(`Is windy condition '${args.device.checkIsWindy(args.wind_speed)}'...`);
+                return args.device.checkIsWindy(args.wind_speed);
+            });
+    }
+	
+	_getDriver(driverName) {
+		try {
+			return this.homey.drivers.getDriver(driverName);
+		} catch (error) {
+			this.homey.error(`Driver '${driverName}' not initialized yet.`)
+			return undefined;
+		}
 	}
 
 	_addDevice(deviceSerialNumber) {
@@ -68,7 +133,7 @@ class SmartWeatherStationApp extends Homey.App {
         if (this.devices.find(device => device.name === deviceSerialNumber))
             return;
 
-        console.log(`hub device found ${deviceSerialNumber}`);
+        this.homey.log(`hub device found ${deviceSerialNumber}`);
 
         this.devices.push({
             "name": deviceSerialNumber,
@@ -79,7 +144,7 @@ class SmartWeatherStationApp extends Homey.App {
     }
 
     _deviceStatus(message) {
-		// console.log(`Device status: ${JSON.stringify(message)}`);
+		// this.homey.log(`Device status: ${JSON.stringify(message)}`);
 
 		// Serial number: {udpResponseMessage.SerialNumber}
 		// Hub serial number: {udpResponseMessage.HubSerialNumber}
@@ -93,7 +158,7 @@ class SmartWeatherStationApp extends Homey.App {
 	}
 
 	_hubStatus(message) {
-		// console.log(`Hub status: ${JSON.stringify(message)}`);
+		// this.homey.log(`Hub status: ${JSON.stringify(message)}`);
 
 		// Serial number: {udpResponseMessage.SerialNumber}
 		// Uptime: {TimeSpan.FromSeconds(udpResponseMessage.Uptime).TotalHours} hours

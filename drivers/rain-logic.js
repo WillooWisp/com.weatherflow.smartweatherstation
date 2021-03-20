@@ -1,10 +1,9 @@
 'use strict';
 
-const Homey = require('homey');
-
 class RainLogic {
     
-    constructor(device) {
+    constructor(homey, device) {
+        this._homey = homey;
         this._device = device;
         this.isRaining = false;
     }
@@ -15,18 +14,18 @@ class RainLogic {
 
         // New date based on the observations epoch.
         const todaysDate = new Date(timestamp * 1000).getDate();
-        let dayRainAmount = Homey.ManagerSettings.get(dayRainAmountKey); 
-        let dayRainDate = Homey.ManagerSettings.get(dayRainDateKey);
+        let dayRainAmount = this._homey.settings.get(dayRainAmountKey); 
+        let dayRainDate = this._homey.settings.get(dayRainDateKey);
         
         // Reset day rain amount if new day.
         if (dayRainDate != todaysDate) {         
             dayRainAmount = 0;             
-            Homey.ManagerSettings.set(dayRainDateKey, todaysDate); 
+            this._homey.settings.set(dayRainDateKey, todaysDate); 
         }
 
         // Add the rain over the last period to the day rain amount.
         dayRainAmount = dayRainAmount + rain;
-        Homey.ManagerSettings.set(dayRainAmountKey, dayRainAmount);
+        this._homey.settings.set(dayRainAmountKey, dayRainAmount);
 
         return dayRainAmount;
     }
@@ -56,15 +55,13 @@ class RainLogic {
         let tokens = {}
         let state = {}
 
-        const driver = this._device.getDriver();
-
         if (isRaining)
         {
-            driver.rainStartTrigger.trigger(this._device, tokens, state)
+            this._homey.app.rainStartTrigger.trigger(this._device, tokens, state)
                 .then()
                 .catch(this.error);
         } else {
-            driver.rainStopTrigger.trigger(this._device, tokens, state)
+            this._homey.app.rainStopTrigger.trigger(this._device, tokens, state)
                 .then()
                 .catch(this.error);
         }

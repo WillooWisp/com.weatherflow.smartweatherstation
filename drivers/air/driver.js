@@ -7,15 +7,14 @@ class AirDriver extends Homey.Driver {
 
     onInit() {
         this._deviceLookup = new DeviceLookup('AR', this);
-        this.log('AirDriver has been inited');
+        this.homey.log('AirDriver has been inited');
     }
 
-    async onPairListDevices(data, callback) {
+    async onPairListDevices() {
         await this._sleep(20000);
 
-        const airDevices = Homey.app.devices.filter(device => device.name.startsWith('AR'));
-
-        callback(null, airDevices);
+        const airDevices = this.homey.app.devices.filter(device => device.name.startsWith('AR'));
+        return airDevices;
     }
 
     updateObservations(message) {
@@ -27,7 +26,7 @@ class AirDriver extends Homey.Driver {
     }
 
     lightningStrikeEvent(message) {
-        console.log(`Air lightning strike: ${JSON.stringify(message)}`);
+        this.homey.log(`Air lightning strike: ${JSON.stringify(message)}`);
 
         const device = this._deviceLookup.getDevice(message.serial_number);
         if (!device)

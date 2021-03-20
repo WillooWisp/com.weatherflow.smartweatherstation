@@ -21,7 +21,7 @@ class AirDevice extends Homey.Device {
 	}
 
 	updateObservations(message) {
-        // console.log(`Air observation: ${JSON.stringify(message)}`);
+        // this.homey.log(`Air observation: ${JSON.stringify(message)}`);
 
         const observations = message.obs;
         if (!observations || observations.length === 0)
