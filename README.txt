@@ -1,9 +1,4 @@
-Adds support for WeatherFlow's Smart Weather Stations.
-
-Supported Devices
-• Air
-• Sky
-• Tempest
+This integration of Smart Weather Stations into your smart home opens up for a lot of new control flow possibilities.
 
 Supported Measurements
 • Temperature

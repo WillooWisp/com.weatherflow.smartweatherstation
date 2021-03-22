@@ -34,5 +34,8 @@
   },
   "0.4.0": {
     "en": "Updated rain measurements to use four decimals."
+  },
+  "0.5.0": {
+    "en": "Updated for Homey v5.0.0 and SDK v3. UV and solar radiation added to flows. Wind triggers only triggered once above / below configured threshold."
   }
 }
